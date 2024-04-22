@@ -1,2 +1,12 @@
 # HDS-notes
-A short course for high-dimensional statistics
+A short course for high-dimensional statistics. 
+
+
+高维数据分析是过去三十年统计领域的主要研究方向, 产生了一批新的统计理论结果和统计方法, 并成功应用到各个交叉领域. 高维数据背后的主要理论工具是概率论以及优化, 两本优秀的专著 High-dimensional probability (by Roman Vershynin)和 High-dimensional statistics (by Martin J  Wainwright)对相关科学问题以及技术工具进行了系统性的介绍. 
+
+本次短期课程(大约10节课)主要面向研究生和博士生, 我们采用一种统计专业同学更加熟悉的方式展开整个高维统计的故事. 从多元统计的角度出发, 更加深入的分析相关估计中涉及到的随机向量和随机矩阵的理论性质, 引出高维情形下产生的新的问题以及对应的高维稀疏解决办法. 希望能够通过此次课程对高维统计分析有所了解, 感兴趣同学可以继续深入系统学习相关专著. 具体课程内容
+
+
+感谢国家天元数学西北中心邀请和组织了此次短期课程, 感谢所有参与课程的同学和老师. 此讲义准备匆忙, 难免有一些错误, 欢迎批评指正.
+
+
