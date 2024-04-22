@@ -1,0 +1,83 @@
+\section{其他高维稀疏估计}
+在高维稀疏线性回归问题中, 估计的参数形式为:
+\begin{align*}
+    \b^\ast=\A^{-1}\a
+\end{align*}
+其中$\A \in \mR^{p \times p}$是一个正定矩阵, $\a \in \mR^p$是一个向量. 从损失函数角度,
+\begin{align*}
+\b^\ast=\argmin_{\b \in \mR^p}\left(\frac{1}{2}\b \trans \A \b-\b \trans \a \right).
+\end{align*}
+基于统计样本, 我们可以构造出$\A$和$\a$在无穷范数下的相合估计, 即
+\begin{align*}
+    \|\hA-\A\|_\infty =O_p(\sqrt{\frac{\log p}{n}}),~\|\ha-\a\|_\infty =O_p(\sqrt{\frac{\log p}{n}}).
+\end{align*}
+由此可得LASSO估计
+\begin{align*}
+    \hb_{\mbox{lasso}}=\argmin_{\b \in \mR^p}\left(\frac{1}{2}\b \trans \hA \b-\b \trans \ha+\lambda \|\b\|_1 \right),
+\end{align*}
+和Dantzig Selector估计
+\begin{align*}
+    \hb_{\mbox{ds}}=\argmin_{\b \in \mR^p} \|\b\|_1,~\mbox{subject~to~} \|\hA \b-\ha\|_\infty \leq \lambda,
+\end{align*}
+其中$\lambda>0$是调节参数. 第五章的LASSO和Dantzig Selector估计的理论性质分析适用于这里的一般情形, 本节我们在这个基础上考虑一下其他高维稀疏多元统计分析问题.
+
+\subsection{线性判别分析}
+在线性判别分析(Linear Discriminant Analysis, LDA)问题中, 考虑两个总体$N(\bmu_1,\bSig)$和$N(\bmu_2,\bSig)$, 要估计的参数为:
+\begin{align*}
+    \bbeta^\ast=\bSig^{-1}(\bmu_1-\bmu_2),
+\end{align*}
+形式上取$\A=\bSig,~\a=\bmu_1-\bmu_2$即可转化为高维稀疏回归问题, 基于样本均值和样本协方差矩阵可以构造出无穷范数下的估计. 特别的, LASSO型的稀疏LDA方法可参见\cite{mai2012direct}, Dantzig Selector型估计可参考\cite{cai2011direct}.  
+\subsection{精度矩阵估计}
+总体协方差矩阵的逆矩阵称为精度矩阵$\bOme \defby \bSig^{-1}$. 在多元正态分布下, 精度矩阵刻画了变量之间的条件协方差(Gaussian graphical model). 高维统计中通过惩罚似然函数可以得到稀疏精度矩阵的估计方法, 即graphical LASSO. 利用回归, 我们也可以构造出另外形式的稀疏精度矩阵估计.
+
+考虑精度矩阵的每一列,
+\begin{align*}
+    \bOme_j=\bSig^{-1} \e_j,
+\end{align*}
+所以形式上取$\A=\bSig, \a=\e_j$即可构造出每一列的稀疏估计. 特别的, LASSO形式的估计参见\cite{liu2015fast}, Dantzig Selector形式估计参见\cite{cai2011constrained}. 考虑到精度矩阵估计要求\blue{对称性}和\blue{正定性}, 实际方法中还需要一些对称化和正定化处理技巧, 完整的证明过程参考相应文献. 
+
+\subsection{二次型判别分析}
+在二次型判别分析(Quadratic Discriminant Analysis)问题中, 考虑两个总体$N(\bmu_1,\bSig_1)$和$N(\bmu_2,\bSig_2)$, 最优的分类准则为
+\begin{align*} 
+    &(\X-\bmu_1) \trans \left(\bSig^{-1}_2-\bSig^{-1}_1 \right)(\X-\bmu_1)-2 \left(\X-\frac{\bmu_1+\bmu_2}{2}\right)\trans \bSig_2^{-1}(\bmu_2-\bmu_1)\\
+    &+\log \frac{|\bSig_2|}{|\bSig_1|} \geq 0,
+\end{align*}
+线性项系数完全等价于线性回归系数, 这里的难点主要是估计一个$p \times p$的矩阵$\bSig^{-1}_2-\bSig^{-1}_1$.
+
+\bigskip
+
+
+从矩阵拉直运算的角度, 
+\begin{align*}
+    \wvec\left(\bSig^{-1}_2-\bSig^{-1}_1 \right)=&\wvec\left( \bSig_2^{-1}(\bSig_2-\bSig_1)\bSig_1^{-1}\right)\\
+    =&\left( \bSig_1^{-1} \otimes \bSig_2^{-1}  \right) \wvec(\bSig_2-\bSig_1)\\
+    =& \left( \bSig_1 \otimes \bSig_2 \right)^{-1} \wvec(\bSig_2-\bSig_1),
+\end{align*}
+这里$\otimes$表示Kronecker乘积. 
+
+\bigskip
+
+所以形式上可设置
+\begin{align*}
+    \A=\bSig_1 \otimes \bSig_2,~\a= \wvec(\bSig_2-\bSig_1),
+\end{align*}
+即考虑一个$p^2$维度的回归问题. 给定样本协方差矩阵$\hSig_1$和$\hSig_2$, LASSO形式的估计为
+\begin{align*}
+    \argmin_{\b \in \mR^{p^2}} \left(\frac{1}{2}\b \trans (\hSig_1 \otimes \hSig_2)\b-\b \trans \wvec(\hSig_2-\hSig_1)+\lambda \|\b\|_1 \right).
+\end{align*}
+如果记$b=\wvec(\B),~\B\in\mR^{p \times p}$, 上述LASSO形式的估计可以采用矩阵形式表述为
+    \begin{align*}
+        \argmin_{\B \in \mR^{p \times p}} \left[\frac{1}{2} \tr \left(\B \trans \hSig_2 \B  \hSig_1\right)-\B \trans (\hSig_2-\hSig_1)+\lambda \|\B\|_1 \right].
+    \end{align*}
+该方法可参看\cite{jiang2018direct}. 类似的, Dantzig Selector形式可参看\cite{zhao2014direct}.     
+
+更加一般的, 可以考虑估计系数矩阵
+\begin{align*}
+    \bSig_1^{-1} \M \bSig_2^{-1},
+\end{align*}
+这一类型的参数在矩阵型数据的判别分析, 二次型回归分析以及充分降维等领域中会出现, 也有很多文献基于类似的LASSO或者Dantzig Selector形式来估计参数.
+
+\subsection{总结}
+至此, 我们从高维角度对多元统计分析相关课题进行了延伸和拓展. 除此之外, 高维统计方法还包括稀疏主成分分析、基于Nuclear-norm的低秩矩阵估计等等其他形式的稀疏估计, 这里不再展开.
+
+

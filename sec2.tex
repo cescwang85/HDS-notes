@@ -1,0 +1,192 @@
+\section{集中不等式}
+  
+在很多统计问题中, 一个重要的目标是得到一个随机变量的尾部概率界不等式, 从而保证一个随机变量与其均值或中位数的接近程度. 
+
+\subsection{从Markov不等式到Chernoff界}
+最基本的尾部概率界是\emph{Markov's inequality}: 	对任意\blue{非负随机变量}$X$, $\forall x >0$,
+	\begin{align*}
+		\pr(X \geq x) \leq \frac{\E X}{x}.
+	\end{align*}
+进一步，对于任意的单调增函数$\phi: \mR^{+} \to \mR^{+}$, 
+\begin{align*}
+	\pr(X \geq x) \leq \pr(\phi(X) \geq \phi(x)) \leq \frac{\E \phi(X)}{\phi(x)},
+\end{align*}
+几种常用的Markov不等式形式
+\begin{itemize}
+	\item \emph{Chebyshev不等式}：
+	\begin{align*}
+		\pr(|X-\mu| \geq t) \leq \frac{\var(X)}{t^{2}} \quad  \forall t>0.
+	  \end{align*}
+\item  基于高阶矩的Markov不等式
+ \begin{align*}
+	\pr(|X-\mu| \geq t) \leq \frac{\E\left(|X-\mu|^{k}\right)}{t^{k}} \quad  \forall t>0.
+  \end{align*}
+  \item \blue{Chernoff界}: 对随机变量$Y=e^{\lambda(X-\mu)}$运用Markov不等式
+  \begin{align*}
+	\log \pr\left((X-\mu) \geq t\right) \leq \inf _{\lambda \in[0, b]}\left\{\log \E\left[e^{\lambda(X-\mu)}\right]-\lambda t\right\}.
+  \end{align*}
+\end{itemize}
+
+\begin{remark}
+	在最优的$k$下, 基于高阶矩的Markov不等式不会比Chernoff界中基于矩母函数获得的界更差. 尽管如此, 在实际应用中, 由于矩母函数计算的便利性, Chernoff界仍有着广泛的应用.
+\end{remark}
+
+  
+
+
+  \subsection{次Gaussian随机变量和Hoeffding界}
+
+  \begin{exm}[Gaussian分布尾部界]
+   令$X \sim N\left(\mu, \sigma^{2}\right)$, 简单的计算可得$X$的矩母函数
+	\begin{align*}
+	  \E\left[e^{\lambda X}\right]=e^{\mu \lambda+\frac{\sigma^{2} \lambda^{2}}{2}}, \qquad \forall\lambda \in \mR.
+	\end{align*}
+代入最优Chernoff界
+	\begin{align*}
+	  \inf _{\lambda \geq 0}\left\{\log \E\left[e^{\lambda(X-\mu)}\right]-\lambda t\right\}=\inf _{\lambda \geq 0}\left\{\frac{\lambda^{2} \sigma^{2}}{2}-\lambda t\right\}=-\frac{t^{2}}{2 \sigma^{2}},
+	\end{align*}
+由此可得\blue{上偏差不等式}:
+	\begin{align} \label{up-bound}
+	  \pr(X \geq \mu+t) \leq e^{-\frac{t^{2}}{2 \sigma^{2}}} \qquad \forall t \geq 0.
+	\end{align}
+对比Mills ratio, 这个界是除了\blue{多项式修正项}之外是最优的.
+  \end{exm}
+  
+由Gaussian分布启发, 定义一般的sub-Gaussian分布.
+\begin{defin}[sub-Gaussian分布]
+	  若存在正实数$\sigma$使得
+	  \begin{align}
+		\E\left[e^{\lambda(X-\mu)}\right] \leq e^{\sigma^{2} \lambda^{2} / 2} \qquad \forall \lambda \in \mR,
+	  \end{align}
+	  那么称这个均值为$\mu=\E[X]$的随机变量$X$是\emph{次Gaussian的}. 常数$\sigma$被称作\emph{次Gaussian参数}.
+	\end{defin}
+
+若$X$是参数为$\sigma$的次Gaussian随机变量, 那么它满足上偏差不等式\eqref{up-bound}. 同样$-X$也是参数为$\sigma$的次Gaussian随机变量, 结合可得到对任意次Gaussian随机变量$X$
+  的\emph{集中不等式}
+  \begin{align*}
+	\pr\left(|X-\mu| \geq t\right) \leq 2 e^{-\frac{t^{2}}{2 x^{2}}} \qquad \forall t >0.
+  \end{align*}
+  
+
+\begin{defin}[次Gaussian随机变量定义的等价性]
+  对任意均值为0的随机变量$X$,下面的性质是等价的：
+		\begin{enumerate}
+		  \item 矩母函数: 存在常数$\sigma\geq 0$使得
+		  \begin{align*}
+			\E\left[e^{\lambda X}\right] \leq e^{\frac{\lambda^{2} \sigma^{2}}{2}} \qquad \forall \lambda \in \mR.
+		  \end{align*}
+		  \item 尾部概率: 存在常数$K_2>0$
+		  \begin{align*}
+			\pr\left( |X| \geq t \right) \leq 2 \exp(-t^2/K_2^2) \quad \forall t \geq 0.
+		  \end{align*}
+		  \item 各阶矩: 存在常数$K_3>0$
+		  \begin{align*}
+			\left( \E |X|^k  \right)^{1/k} \leq K_2 \sqrt{k},~\forall k \geq 1.
+		  \end{align*}
+		  \item $X^2$矩母函数:存在常数$K_4>0$
+		  \begin{align*}
+			\E \exp(\lambda^2 X^2) \leq \exp(K_4^2 \lambda^2),\forall 0 \leq \lambda \leq \frac{1}{K_4}.
+		\end{align*}
+		  \item $X^2$矩母函数:存在常数$K_5>0$
+		  \begin{align*}
+			\E \exp(X^2/K^5_4) \leq 2.
+		\end{align*}
+		\end{enumerate}
+	\end{defin}
+
+非正态的次Gaussian随机变量包括:
+\begin{itemize}
+	\item  一个Rademacher随机变量$\varepsilon$是指等概率取$\{-1,1\}$的随机变量. 它是一个参数为$\sigma=1$的次Gaussian随机变量.
+	\item 设$X$是均值为0,支撑集为某个区间$[a,b]$的随机变量. 是一个参数为$b-a$的次Gaussian随机变量, 更复杂的推导可以知道$X$是参数为$\sigma\leq \frac{b-a}{2}$的次Gaussian随机变量.
+\end{itemize}
+  
+类似于正态随机变量在线性运算下还是正态随机变量, 次Gaussian随机变量同样有类似的性质. 例如, $X_{1}$和$X_{2}$是独立的次Gaussian随机变量,对应的参数分别为$\sigma_{1}$和$\sigma_{2}$, 那么$X_{1}+X_{2}$则是参数
+为$\sqrt{\sigma_{1}^{2}+\sigma_{2}^{2}}$的次Gaussian随机变量. 对于独立的次Gaussian随机变量的和, 可得到一个重要的结果，也就是\emph{Hoeffding界}：
+
+  \begin{prop}[Hoeffding界]\label{prop:2.5}
+  假定次Gaussian随机变量$X_{i}, i=1,\ldots,n$相互独立, 其对应的均值和次Gaussian参数分别为$\mu_{i}$及$\sigma_{i}$. 那么, 对任意的$t>0$, 我们有
+	\begin{align*}
+	  \pr\left[\sum_{i=1}^{n}\left(X_{i}-\mu_{i}\right) \geq t\right] \leq \exp \left\{-\frac{t^{2}}{2 \sum\limits_{i=1}^{n} \sigma_{i}^{2}}\right\}.
+	\end{align*}
+  \end{prop}
+
+
+  \subsection{次指数随机变量和Bernstein界}
+  次Gaussian一般用来研究均值, 进一步如果研究方差就需要更一般的分布. 在正态分布框架中，正态分布的平方对应卡方分布，自由度为2的卡方分布正好是指数分布. 我们接下来研究次指数随机变量, 其对矩母函数的要求相对更加宽松:
+	\begin{defin}[次指数分布]
+对于一个均值为零的随机变量$X$, 称之为\blue{次指数}随机变量, 如果下列任意一条件成立:
+\begin{enumerate}
+	\item 尾部概率: 存在常数$K_1$, 使得
+	\begin{align*}
+		\pr(|X|\geq t) \leq 2 \exp(-t/K_1),~\forall t \geq 0.
+	\end{align*}
+	\item 各阶矩: 存在常数$K_2$, 使得
+	\begin{align*}
+		\left( \E |X|^k  \right)^{1/k} \leq K_2 k,~\forall k \geq 1.
+	\end{align*}
+	\item 矩母函数: 存在常数$K_3$, 使得
+	\begin{align*}
+		\E \exp(\lambda |X|) \leq \exp(K_3 \lambda),~\forall 0 \leq \lambda \leq \frac{1}{K_3}.
+	\end{align*}
+	\item 矩母函数: 存在常数$K_4$,
+	\begin{align*}
+		\E \exp(|X|/K_4) \leq 2.
+	\end{align*}
+	\item 矩母函数: 存在常数$K_5$,
+	\begin{align*}
+		\E \exp(\lambda X) \leq \exp(K_5^2 \lambda^2),~~\forall |\lambda| \leq \frac{1}{K_5}.
+	\end{align*}
+\end{enumerate}
+	\end{defin}
+按照定义: 所有的次Gaussian随机变量都是次指数的的. 然而, 次指数随机变量并不一定是次Gaussian的, 卡方分布就是一个例子:
+  \begin{exm}[非次Gaussian的次指数随机变量]
+	令$Z \sim \mathcal{N}(0,1)$, 考虑随机变量$X=Z^{2}$. 对$\lambda<\frac{1}{2}$, 我们有
+	\begin{align*}
+	  \E\left[e^{\lambda(X-1)}\right] &=\frac{1}{\sqrt{2 \pi}} \int_{-\infty}^{+\infty} e^{\lambda\left(z^{2}-1\right)} e^{-z^{2} / 2} d z=\frac{e^{-\lambda}}{\sqrt{1-2 \lambda}}.
+	\end{align*}
+  对$\lambda>\frac{1}{2}$, 矩母函数是发散的, 即说明$X$不是次Gaussian的. 通过简单的计算得知：
+	\begin{align}
+	  \frac{e^{-\lambda}}{\sqrt{1-2 \lambda}} \leq e^{2 \lambda^{2}}=e^{4 \lambda^{2} / 2}, \qquad \forall|\lambda|<\frac{1}{4}.
+	  \label{eq:2.14}
+	\end{align}
+  \end{exm}
+
+    
+  同次Gaussian性类似, 对于次指数分布, 结合Chernoff界的技巧, 就可以得到次指数随机变量对应的偏差和集中不等式. 当$t$充分小的时候, 这些界本质上是次Gaussian的(即指数部分为$t^2$阶); 而当$t$较大的时候, 这个界的指数部分会与$t$成线性关系. 	
+	  \begin{prop}[次指数的Chernoff界]\label{prop:2.10}
+	对于均值为零的次指数随机变量
+	\begin{align*}
+		\E \exp(\lambda |X|) \leq \exp(K^2 \lambda^2),~~\forall |\lambda| \leq \frac{1}{K},
+	\end{align*}
+	可得集中不等式:
+	\begin{align*}
+		\pr\left(|X|\geq t \right) \leq \begin{cases}
+		\exp\left(-\frac{t^2}{4K^2}  \right) 	& 0\leq t \leq 2 K\\
+			\exp\left(1-\frac{t}{K} \right)& t>2K.
+		\end{cases}, 
+	\end{align*}
+\end{prop}
+	  就像次Gaussian性一样,独立次指数随机变量的和同样保持次指数性, 由此可得Bernstein's inequality.
+\begin{thm}[Bernstein不等式]
+假设$X_1,\ldots,\X_n$是均值为零, 独立同分布的次指数随机变量,
+\begin{align*}
+	\E \exp(\lambda X_i) \leq \exp(\sigma_i^2 \lambda^2),~~\forall |\lambda| \leq \frac{1}{\sigma_i}.
+\end{align*}
+那么, $\forall t \geq 0$
+\begin{align*}
+	\pr \left(\left|\frac{1}{n}\sum_{i=1}^n X_i\right| \geq t  \right) \leq \begin{cases}
+		2 \exp \left(-\frac{n^2t^2}{4 \sum\limits_{i=1}^n \sigma_i^2}  \right), & 0\leq t \leq \frac{2 \sum\limits_{i=1}^n \sigma_i^2}{n \max_i \sigma_i}\\
+		2\exp\left(\frac{\sum_{i=1}^n \limits \sigma_i^2}{\max_i \sigma_i^2}-\frac{nt}{\max_{i} \sigma_i}  \right),& t >\frac{2 \sum\limits_{i=1}^n \sigma_i^2}{n \max_i \sigma_i}.
+	\end{cases}
+\end{align*}
+\end{thm}
+实际使用时候, $t=o(1)$, 即我们使用平方项目, 从而对于次指数分布也可以得到类似于次Gaussian分布的Hoeffding界结果. 
+
+
+
+\begin{ques}
+对于多元正态分布$N(\bmu,\bSig)$的样本协方差矩阵$\hSig$, 尝试利用Bernstein不等式分析每个元素的界, 即
+\begin{align*}
+	\hat{\Sigma}_{ij}-\Sigma_{ij}=\e_i \trans (\hSig-\bSig) \e_j.
+\end{align*}
+\end{ques}

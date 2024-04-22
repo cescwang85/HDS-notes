@@ -1,0 +1,231 @@
+\section{高维稀疏线性回归}
+本节我们考虑回归问题, 样本
+\begin{align*}
+    (\X_1,Y_1),\cdots,(\X_n,Y_n),i.i.d.\sim (\X,Y),
+\end{align*}
+其中$\X \in \mR^p$为解释变量, $Y \in \mR$为响应变量. 从总体角度, 最优线性投影
+\begin{align*}
+    \bbeta^*=&\argmin_{\beta \in \mR^p} \E \left[(Y-\E Y)-\bbeta \trans (\X-\E\X)  \right]^2\\
+ =&  \argmin_{\beta \in \mR^p} \left[ \bbeta \trans \E (\X-\E\X)(\X-\E\X)\trans \bbeta-2 \bbeta \trans   \E (\X-\E\X)(Y-\E Y)       \right]=\bSig^{-1} \a, 
+\end{align*}
+其中
+\begin{align*}
+    \bSig=\E (\X-\E\X)(\X-\E\X)\trans=\cov(\X),~\a=\E (\X-\E\X)(Y-\E Y) =\cov(\X,Y).
+\end{align*}
+\bigskip
+
+基于样本$(\X_i,Y_i)$, 可以得到样本协方差矩阵和样本协方差向量
+\begin{align*}
+    \hSig=\frac{1}{n} \sum_{i=1}^n (\X_i-\bar{\X})(\X_i-\bar{\X})\trans, \ha=\frac{1}{n} \sum_{i=1}^n (\X_i-\bar{\X})(Y_i-\bar{Y})
+\end{align*}
+其中$\bar{\X}=\frac{1}{n} \sum_{i=1}^n \X_i$和$\bar{Y}=\frac{1}{n}\sum_{i=1}^n Y_i$分别为解释变量和响应变量的样本均值.  由此平方损失可以表述为
+\begin{align*}
+    \frac{1}{2n} \sum_{i=1}^n \left[ (Y_i-\bar{Y})-\bbeta \trans (\X_i-\bar{\X})  \right]^2=\frac{1}{2} \bbeta \trans \hSig\bbeta-\bbeta\trans \ha+\frac{1}{2n}\sum_{i=1}^n(Y_i-\bar{Y})^2.
+\end{align*}
+\bigskip
+
+
+
+在经典统计中($p$固定, $n$趋于无穷), 这时候样本协方差矩阵$\hSig$是可逆的, 可得到经典最小二乘估计
+\begin{align*}
+    \argmin_{\beta \in \mR^p} \frac{1}{2n} \sum_{i=1}^n \left[ (Y_i-\bar{Y})-\bbeta \trans (\X_i-\bar{\X})  \right]^2\\
+    =  \argmin_{\beta \in \mR^p} \left(\frac{1}{2} \bbeta \trans \hSig\bbeta-\bbeta\trans \ha \right)=\hSig^{-1}\ha.
+\end{align*}
+对于高维情形(例如$p \gg n$), 因为样本协方差矩阵不可逆从而最小二乘估计不再适用, 方法上需要引入新的稀疏线性回归方法. 从理论角度, 一定条件下$\ell_\infty$-norm下样本协方差估计还是相合的, 从这种无穷范数下的相合性能否推导出稀疏线性回归方法的相合性, 也是高维稀疏回归的关键科学问题.
+
+\subsection{LASSO}
+\cite{tibshirani1996regression}在最小二乘法的基础上引入$\ell_1$惩罚, 提出了LASSO方法(Least Absolute Shrinkage and Selection Operator),
+\begin{align*}
+    \min_{\beta \in \mR^p} \frac{1}{2n} \sum_{i=1}^n \left[ (Y_i-\bar{Y})-\bbeta \trans (\X_i-\bar{\X})  \right]^2+\lambda \|\bbeta\|_1,
+\end{align*}
+等价的可表示为
+\begin{align*}
+    \hbeta_{\mbox{lasso}}(\lambda)=\argmin_{\beta \in \mR^p} \left(    \frac{1}{2} \bbeta \trans \hSig\bbeta-\bbeta\trans \ha +\lambda \|\bbeta\|_1  \right),  
+  \end{align*}
+这里$\lambda>0$是一个调节参数. 
+
+假定真实参数$\bbeta^\ast$的支撑集$\supp=\{i:\beta^\ast_i \neq 0\}$元素不是特别多, 可以得到严格稀疏下的LASSO相合性.
+\begin{thm}[LASSO相合性]
+假设
+    \begin{align*}
+        \|\hSig-\bSig\|_\infty \leq c \sqrt{\frac{\log p}{n}},~ \|\ha-\a\|_\infty \leq c \sqrt{\frac{\log p}{n}}, ~\|\bbeta\|_0\bSig_{\supp,\supp}^{-1}\|_{L} \sqrt{\frac{\log p}{n}} \to 0,
+    \end{align*}    
+以及Irrepresentable Condition
+\begin{align*}
+    \|\bSig_{\supp^c,\supp} \bSig^{-1}_{\supp,\supp}\|_{L}<1-\alpha,~\alpha>0.
+\end{align*}
+设置
+\begin{align*}
+        \lambda=\frac{3c}{\alpha} \sqrt{\frac{\log p}{n}} (1+\|\bbeta^\ast\|_1),
+    \end{align*}
+可得
+  \begin{itemize}
+    \item 支撑集相合性: $\hbeta_{\mbox{lasso}}(\supp^c)=\bf{0}$.
+    \item 无穷范数相合性:  
+    \begin{align*}
+        \|\hbeta_{\mbox{lasso}}-\bbeta^\ast\|_\infty \leq 2c (1+\frac{3}{\alpha}) \|\bSig_{\supp,\supp}^{-1}\|_{L}  (1+\|\bbeta^\ast\|_1) \sqrt{\frac{\log p}{n}}. 
+    \end{align*}
+  \end{itemize}
+    \end{thm}
+从理论结果可以看出通过设置合适的调节参数, LASSO方法可以有效的去除噪音变量, 估计效果几乎等价于在已知支撑集的条件下的最小二乘法, 两者制相差了一个$\sqrt{\log p}$项.    
+
+\subsection{Dantzig Selector}
+对于LASSO估计, 考虑KKT(Karush–Kuhn–Tucker)条件,
+\begin{align*}
+\hSig \hbeta_{\mbox{lasso}}-\ha +\lambda \cdot \sign\left(\hbeta_{\mbox{lasso}}\right)=\bf{0},  
+\end{align*}
+即LASSO估计满足性质
+\begin{align*}
+    \|\hSig \bbeta-\ha\|_\infty \leq \lambda.
+\end{align*}
+\cite{candes2007dantzig}提出Dantzig Selector(下文简写DS)方法
+\begin{align*}
+    \hbeta_{\mbox{ds}}(\lambda)= \argmin_{\beta \in \mR^p} \|\bbeta\|_1,~\mbox{subject~to~}  \|\hSig \bbeta-\ha\|_\infty \leq \lambda.
+\end{align*}
+理论上, 对于同样的调节参数$\lambda$, 一定有$\|\hbeta_{\mbox{ds}}\|_1 \leq \|\hbeta_{\mbox{lasso}}\|_1$, 即在$\ell_1$范数下, DS估计比LASSO估计更加稀疏. 理论分析过程中, 这种更加稀疏的特性也会大大简化DS的证明过程, 例如这里我们可以考虑更为宽松的渐近稀疏情形.
+\begin{thm}[Dantzig Selector]
+当
+\begin{align*}
+    \|\hSig-\bSig\|_\infty \leq c \sqrt{\frac{\log p}{n}},~ \|\ha-\a\|_\infty \leq c \sqrt{\frac{\log p}{n}}
+\end{align*}    
+成立时, 设置
+\begin{align*}
+    \lambda=c \sqrt{\frac{\log p}{n}} (1+\|\bbeta^\ast\|_1),
+\end{align*}
+可得
+\begin{align*}
+    \|\hbeta_{\mbox{ds}}-\bbeta\|_\infty \leq 2c \|\bSig^{-1}\|_L (1+\|\bbeta^\ast\|_1) \sqrt{\frac{\log p}{n}}. 
+\end{align*}
+ 进一步假定$\bbeta^\ast$是渐近稀疏的,
+ \begin{align*}
+    \|\hbeta_{\mbox{ds}}-\bbeta\|_1 \leq & 4 \|\bbeta^{\ast}\|^q_q c^{1-q} \|\bSig^{-1}\|^{1-q}_L (1+\|\bbeta^\ast\|_1)^{1-q} \left(\sqrt{\frac{\log  p}{n}}\right)^{1-q},\\
+    \|\hbeta_{\mbox{ds}}-\bbeta\|_2 \leq & 3 \sqrt{\|\bbeta^{\ast}\|^q_q} c^{1-q/2} \|\bSig^{-1}\|^{1-q/2}_L (1+\|\bbeta^\ast\|_1)^{1-q/2} \left(\sqrt{\frac{\log  p}{n}}\right)^{1-q/2}.
+\end{align*}
+\end{thm}
+
+\subsection{相关文献}
+高维线性回归是整个高维数据分析的最核心问题, 除了LASSO和Dantzig Selector还有其他一些方法, 这里不再展开. 关于LASSO的证明, \cite{zou2006adaptive, zhao2006model, wainwright2009sharp}等最早取得了理论上的突破. 除了这里的不可表示条件, 分析LASSO支撑集相合性还有一些其他的条件, \cite{van2009conditions}对这些条件进行了详细的比较. 进一步的，\cite{zhang2012general}利用基本不等式研究了渐近稀疏情形. 
+
+关于Dantzig Selector的理论性质, \cite{candes2007dantzig}原始论文研究的是严格稀疏情形, \cite{cai2011constrained}在研究精度矩阵估计时候考虑了Dantzig Selector估计的渐近稀疏情形, 这里介绍的正是后者的证明思路. 
+
+\subsection{附录1: LASSO的理论证明}
+
+ \begin{proof}
+这里采用的是\cite{wainwright2009sharp}的证明手法. 首先考虑考虑支撑集$\supp$上的LASSO估计
+\begin{align*}
+\hb=&\argmin_{\b \in \mR^q,~\b_{\supp^c}=0}  \frac{1}{2}\b \trans \hSig \b-\b \trans \ha+\lambda \|\b\|_1\\
+=&\argmin_{\b \in \mR^q,~\b_{\supp^c}=0}   \frac{1}{2}\b_{\supp} \trans \hSig_{\supp,\supp} \b_{\supp}-\b_{\supp} \trans \ha_{\supp}+\lambda \|\b_{\supp}\|_1.
+\end{align*}
+由KKT条件可得, 
+\begin{align*}
+    \hSig_{\supp,\supp} \hb_{\supp}-\ha_{\supp}+\lambda \cdot \sign(\hb_{\supp})=0.
+\end{align*}
+由定义$\bbeta^\ast=\bSig^{-1} \a$, 
+\begin{align*}
+\begin{pmatrix}
+	\a_{\supp}\\
+	\a_{\supp^c}
+\end{pmatrix}=\begin{pmatrix}
+	\bSig_{\supp,\supp}& \bSig_{\supp,\supp^c}\\
+	\bSig_{\supp^c,\supp}& \bSig_{\supp^c,\supp^c}\\
+\end{pmatrix} \begin{pmatrix}
+	\bbeta^\ast_{\supp}\\
+	\textbf{0}\\
+\end{pmatrix}=\begin{pmatrix}
+	\bSig_{\supp,\supp} \bbeta^\ast_{\supp}\\
+	\bSig_{\supp^c,\supp} \bbeta^\ast_{\supp}
+\end{pmatrix},
+\end{align*}
+所以
+\begin{align*}
+\hb_{\supp}-\bbeta^\ast_{\supp}=&\bSig_{\supp,\supp}^{-1}\bSig_{\supp,\supp}(\hb_{\supp}-\bbeta^\ast_{\supp})\\
+=&\bSig_{\supp,\supp}^{-1} \left( (\bSig_{\supp,\supp}-\hSig_{\supp,\supp}) (\hb_{\supp}-\bbeta^\ast_{\supp})+(\hSig_{\supp,\supp}\hb_{\supp}-\ha_\supp)+ (\hSig_{\supp,\supp}\bbeta^\ast_{\supp}-\ha_\supp)\right).
+\end{align*}
+由三角不等式, 可得
+\begin{align*}
+\|\hb_{\supp}-\bbeta^\ast_{\supp}\|_\infty\leq \|\bSig_{\supp,\supp}^{-1}\|_{L} \left( |\supp| \|\hSig-\bSig\|_{\infty} \|\hb_{\supp}-\bbeta^\ast_{\supp}\|_\infty+\lambda+\alpha \lambda/3\right),
+\end{align*}
+整理可得
+\begin{align*} 
+    \|\hb_{\supp}-\bbeta^\ast_{\supp}\|_\infty  \leq (1+\frac{\alpha}{3})\frac{\|\bSig_{\supp,\supp}^{-1}\|_{L}  \lambda}{1-\|\bSig_{\supp,\supp}^{-1}\|_{L} |\supp| \|\hSig-\bSig\|_{\infty} }.
+\end{align*}
+\bigskip
+
+接下来, 验证上述带约束估计满足原始LASSO问题的KKT条件
+\begin{align*} 
+\|(\hSig \hb-\ha)_{\supp}\|_{\infty} \leq \lambda, \mbox{和}~\|(\hSig \hb-\ha)_{\supp^c}\|_{\infty} <\lambda,
+\end{align*}
+即
+\begin{align*}
+    \|\hSig_{\supp,\supp} \hb_{\supp}-\ha_{\supp}\|_\infty \leq \lambda,~\|\hSig_{\supp^c,\supp} \hb_{\supp}-\ha_{\supp^c}\|_\infty<\lambda.  
+\end{align*}
+第一项就是上述带约束LASSO问题的KKT条件. 这里考虑第二项,
+    \begin{align*} 
+       & \hSig_{\supp^c,\supp} \hb_{\supp}-\ha_{\supp^c}\\
+    =&(\hSig_{\supp^c,\supp}-\bSig_{\supp^c,\supp})(\hb_{\supp}-\bbeta^\ast_{\supp})+\bSig_{\supp^c,\supp}\bSig_{\supp,\supp}^{-1} \{\bSig_{\supp,\supp}(\hb_{\supp}-\bbeta^\ast_{\supp})\}+\hSig_{\supp^c,\supp} \bbeta^\ast_{\supp}-\ha_{\supp^c}\\
+    =&(\hSig_{\supp^c,\supp}-\bSig_{\supp^c,\supp})(\hb_{\supp}-\bbeta^\ast_{\supp})+\hSig_{\supp^c,\supp} \bbeta^\ast_{\supp}-\ha_{\supp^c}\\
+    &+\bSig_{\supp^c,\supp}\bSig_{\supp,\supp}^{-1} \{(\bSig_{\supp,\supp}-\hSig_{\supp,\supp})(\hb_{\supp}-\bbeta^\ast_{\supp})+\hSig_{\supp,\supp}(\hb_{\supp}-\bbeta^\ast_{\supp})\},
+    \end{align*}
+利用三角不等式
+\begin{align*}
+ \|\hSig_{\supp^c,\supp} \hb_{\supp}-\ha_{\supp^c}\|_\infty \leq & s \|\hSig-\bSig\|_\infty \|\hb_{\supp}-\bbeta^\ast_{\supp}\|_\infty+\frac{\alpha}{3} \lambda\\ 
+ &+(1-\alpha)\left(s \|\hSig-\bSig\|_\infty \|\hb_{\supp}-\bbeta^\ast_{\supp}\|_\infty+\lambda+\frac{\alpha}{3} \lambda\right)\\
+=&\lambda-\frac{\alpha(1+\alpha)}{3} \lambda +(2-\alpha) s \|\hSig-\bSig\|_\infty \|\hb_{\supp}-\bbeta^\ast_{\supp}\|_\infty\\
+\leq & \lambda-\frac{\alpha(1+\alpha)}{3} \lambda +  (2-\alpha) s c \sqrt{\frac{\log p}{n}} \frac{2\|\bSig_{\supp,\supp}^{-1}\|_{L}}{1-c \|\bSig_{\supp,\supp}^{-1}\|_{L} s  \sqrt{\frac{\log p}{n}} } \frac{3+\alpha}{3} \lambda.
+\end{align*}
+注意
+\begin{align*}
+     s  \|\bSig_{\supp,\supp}^{-1}\|_{L}\sqrt{\frac{\log p}{n}}  \to 0, 
+\end{align*}
+所以
+\begin{align*}
+    \|\hSig_{\supp^c,\supp} \hb_{\supp}-\ha_{\supp^c}\|_\infty <\lambda.
+\end{align*}
+\end{proof}
+
+
+\subsection{附录2: 渐近稀疏下的LASSO的理论证明}
+\subsection{附录3: DS的理论证明}
+对于Dantzig Selector估计
+\begin{align*}
+    \hbeta_{\mbox{ds}}(\lambda)= \argmin_{\beta \in \mR^p} \|\bbeta\|_1,~\mbox{subject~to~}  \|\hSig \bbeta-\ha\|_\infty \leq \lambda.
+\end{align*}
+设置
+\begin{align*}
+\lambda \geq \|(\hSig-\bSig)\|_\infty \|\bbeta^\ast\|_1+\|\a-\ha\|_\infty \geq \|(\hSig-\bSig) \bbeta^\ast+\a-\ha\|_\infty=\|\hSig \bbeta^\ast-\ha\|_\infty,
+\end{align*}
+即真实参数满足约束条件, 从而可得
+\begin{align*}
+  \|\hbeta_{\mbox{ds}}\|_1 \leq \|\bbeta^\ast\|_1.  
+\end{align*}
+由此,
+\begin{align*}
+    \|\hbeta_{\mbox{ds}}-\bbeta^\ast\|_\infty=&\|\bSig^{-1} \bSig(\hbeta_{\mbox{ds}}-\bbeta^\ast)\|_\infty \leq \|\bSig^{-1}\|_{L} \|\bSig(\hbeta_{\mbox{ds}}-\bbeta^\ast)\|_\infty \\
+ =&\|\bSig^{-1}\|_{L} \|(\bSig-\hSig)\hbeta_{\mbox{ds}}+\hSig\hbeta_{\mbox{ds}}-\ha+\ha-\a \|_\infty\\
+ \leq &\|\bSig^{-1}\|_{L} \left( \|\hSig-\bSig\|_\infty \|\hbeta_{\mbox{ds}}\|_1+\|\hSig\hbeta_{\mbox{ds}}-\ha\|_\infty+\|\ha-\a\|_\infty\right)\\
+ \leq &2 \|\bSig^{-1}\|_{L} \lambda.
+\end{align*}
+
+
+基于$|\hbeta|_1 \leq |\bbeta|_1$以及$t_n=|\hbeta-\bbeta|_\infty$比较小, 可以控制$\ell_1$-norm. 记集合$J=\{j: |\beta_j| < t_n \}$, 则
+\begin{align*}
+  \sum_{j \in J} |\hat{\beta}_j|+  \sum_{j \in J^c} |\hat{\beta}_j| \leq \sum_{j \in J} |\beta_j|+  \sum_{j \in J^c} |\beta_j|,
+\end{align*}
+由此可得
+\begin{align*}
+    \sum_{j \in J} |\hat{\beta}_j| \leq \sum_{j \in J} |\beta_j|+   \sum_{j \in J^c} \left(|\beta_j|-|\hat{\beta}_j|\right)\leq \sum_{j \in J} |\beta_j|+   \sum_{j \in J^c} |\hat{\beta}_j-\beta_j|.
+\end{align*}
+因此
+\begin{align*}
+    |\hbeta-\bbeta|_1=& \sum_{j \in J^c} |\hat{\beta}_j-\beta_j|+\sum_{j \in J} |\hat{\beta}_j-\beta_j|\\
+\leq & 2 \sum_{j \in J^c} |\hat{\beta}_j-\beta_j|+2\sum_{j \in J} |\beta_j|\\
+\leq & 2 \sum_{j:|\beta_j| \geq t_n } t_n+2\sum_{j:|\beta_j| < t_n } |\beta_j|\\
+\leq & 2\sum_{j:|\beta_j| \geq t_n } |\beta_j|^q |t_n|^{1-q}+2\sum_{j:|\beta_j| < t_n } |\beta_j|^q |t_n|^{1-q}\\
+= & 2 |t_n|^{1-q} \sum_{j=1}^p |\beta_j|^q.
+\end{align*}
+
+由此
+\begin{align*}
+    |\hbeta-\bbeta|^2_2\leq   |\hbeta-\bbeta|_\infty |\hbeta-\bbeta|_1 \leq 12 t_n^{2-q} \sum_{i=1}^p |\beta_i|^q.
+\end{align*}
+

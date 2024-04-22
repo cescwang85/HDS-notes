@@ -1,0 +1,201 @@
+\section{最大特征值的概率界}
+
+
+\subsection{引例: 最大元素的尾部概率}
+由次Gaussian随机变量和次指数的性质, 我们可以控制独立和随机变量的尾部概率(Hoeffding不等式和Bernstein不等式)。利用这些尾部概率，通过简单求和即可得到随机向量(多元样本均值)和随机矩阵(样本协方差矩阵)的$\ell_\infty$-norm的刻画.
+
+\begin{exm}[多元样本均值的$\ell_\infty$-norm]
+对于一组独立的多元样本$\X_1,\ldots,\X_n \in \mR^p$, 考虑总体均值$\bmu\defby \E \X_1$的样本均值
+\begin{align*}
+    \bar{\X}=\frac{1}{n}\sum_{i=1}^n \X_i
+\end{align*}
+假设每个分量都是参数为1的次Guassian随机变量, 即
+\begin{align*}
+    \E\left[e^{\lambda (X_{1j}-\mu_j)}\right] \leq e^{\frac{\lambda^{2}}{2}} \qquad \forall \lambda \in \mR,~j=1,\cdots,p.
+\end{align*}
+利用Hoeffding界,
+  \begin{align*}
+    \pr\left[|\bar{X}_j-\mu_j| \geq t\right] \leq  2 \exp \left\{-\frac{n t^2}{2}\right\},~j=1,\cdots,p.
+  \end{align*}
+  由此可得
+ \begin{align*}
+    \pr\left[\|\bar{\X}-\bmu\|_\infty \geq t  \right] \leq \sum_{j=1}^p   \pr\left[|\bar{X}_j-\mu_j| \geq t\right] \leq 2p \exp \left\{-\frac{n t^2}{2 }\right\}
+ \end{align*} 
+ 设置
+ \begin{align*}
+    t=\sqrt{c \frac{2\log p}{n}},~c>1,
+ \end{align*}
+ 可得
+ \begin{align*}
+    \pr\left[\|\bar{\X}-\bmu\|_\infty \geq \sqrt{c \frac{2\log p}{n}} \right] \leq 2p^{1-c},
+ \end{align*}
+即
+\begin{align*}
+    \|\bar{\X}-\bmu\|_\infty=O_p\left( \sqrt{\frac{2\log p}{n}}  \right). 
+\end{align*}
+\blue{注意:} 从普适性(Universality)的角度, 相比于标准多元正态分布($\bSig=\bI$)的结果, 这里把结果推广到了次Guassian分布, 同时不需要分量之间的独立性.
+\end{exm}
+
+
+
+
+\begin{exm}[样本协方差矩阵的$\ell_\infty$-norm]
+    对于一组独立的多元样本$\X_1,\ldots,\X_n \in \mR^p$, 考虑总体协方差矩阵$\bSig \defby \cov(\X_1)$的样本协方差矩阵
+    \begin{align*}
+        \hSig=\frac{1}{n}\sum_{i=1}^n (\X_i-\bmu)(\X_i-\bmu)\trans.
+    \end{align*}
+    假设每个分量都是参数为1的次Guassian随机变量, 即
+    \begin{align*}
+        \E\left[e^{\lambda (X_{1j}-\mu_j)}\right] \leq e^{\frac{\lambda^{2}}{2}} \qquad \forall \lambda \in \mR,~j=1,\cdots,p.
+    \end{align*}
+    利用Bernstein界,
+    \begin{align*}
+        \pr\left[|\hat{\Sigma}_{ij}-\Sigma_{ij}| \geq t\right] \leq 2 \exp\left( -\frac{nt^2}{8}\right), \quad \forall t \in(0,1).
+      \end{align*}
+      由此可得
+     \begin{align*}
+        \pr\left[\|\hSig-\bSig\|_\infty \geq t  \right] \leq \sum_{i,j=1}^p   \pr\left[|\hat{\Sigma}_{ij}-\Sigma_{ij}| \geq t\right] \leq 2 p^2 \exp\left( -\frac{nt^2}{8}\right), \quad \forall t \in(0,1).
+     \end{align*} 
+     设置
+     \begin{align*}
+        t=\sqrt{c \frac{8\log p}{n}} \red{\in(0,1)},~c>2
+     \end{align*}
+     可得
+     \begin{align*}
+        \pr\left[\|\hSig-\bSig\|_\infty \geq  \sqrt{c \frac{8\log p}{n}} \right] \leq 2p^{2-c},
+     \end{align*}
+    即$\log p=o(n)$时
+    \begin{align*}
+        \|\hSig-\bSig\|_\infty=O_p\left( \sqrt{\frac{\log p}{n}}  \right). 
+    \end{align*}
+    \end{exm}
+\begin{remark}
+    对于带有样本均值的协方差矩阵
+    \begin{align*}
+        \S_n=\frac{1}{n}\sum_{i=1}^n (\X_i-\bar{\X})(\X_i-\bar{\X})\trans=\hSig+(\bar{\X}-\bmu)(\bar{\X}-\bmu)\trans,
+    \end{align*}
+由此, $\log p=o(n)$时
+\begin{align*}
+    \|\S_n-\bSig\|_\infty \leq \|\hSig-\bSig\|_\infty+\|\bar{\X}-\bmu\|^2_\infty=O_p\left( \sqrt{\frac{\log p}{n}}  \right)+O_p\left(\frac{\log p}{n}  \right)=O_p\left( \sqrt{\frac{\log p}{n}}  \right).
+\end{align*}
+\end{remark}
+
+
+\begin{exm}[$\ell_\infty$-norm的期望]
+    上述通过对尾部概率求和的方式不能用来得到期望的结果, 例如
+    \begin{align*}
+      \E \left[ \|\bar{\X}-\bmu\|_\infty \right]=&\int_0^\infty \pr\left[\|\bar{\X}-\bmu\|_\infty \geq t  \right] dt \leq  \int_0^\infty 2p \exp \left\{-\frac{n t^2}{2 }\right\} dt\\
+      =& \sqrt{2 \pi} \frac{p}{\sqrt{n}}~~~(\approx  \E \left[ \|\bar{\X}-\bmu\|_1 \right]).
+    \end{align*}  
+   这里可以利用更加高级的Chernoff界的技巧, 由$Jessen$不等式
+   \begin{align*}
+      \exp\left( t \E \left[ \|\bar{\X}-\bmu\|_\infty \right]  \right)\leq & \E \exp \left[ t \|\bar{\X}-\bmu\|_\infty   \right]=\E  \max_{j} \exp \left[ t |\bar{X}_j-\mu_j|  \right]\\
+      \leq & \sum_{j=1}^p \E \exp \left[ t |\bar{X}_j-\mu_j|   \right]\leq p \exp\left(\frac{t^2}{2n} \right), \forall t>0,
+   \end{align*}
+   由此
+   \begin{align*}
+      \E \left[ \|\bar{\X}-\bmu\|_\infty \right] \leq \min_{t>0} \frac{\log(p)+\frac{t^2}{2n}}{t}=\sqrt{\frac{2\log p}{n}}.
+   \end{align*}
+  \end{exm}
+
+\subsection{最大特征值表示}
+上述求最大值需要用到和控制一系列随机变量，这些变量由一个有限的指标集来标记, 例如
+\begin{align*}
+    \|\bar{\X}-\bmu\|_\infty=\max_{j=1,\ldots,p} |\e_j \trans (\bar{\X}-\bmu)|,~~\|\hSig-\bSig\|_\infty=\max_{i,j=1,\ldots,p} |\e_i \trans (\hSig-\bSig)\e_j|,
+\end{align*}
+这里$\e_i \in \mR^p$表示第$i$个元素为1, 其余为0的向量. 相关结果可以通过集合元素个数乘以尾部概率来实现控制, 最终结果依赖于集合基数的的对数, 即$\log |\supp|$.
+
+
+如果指标集包含了无穷个元素, 例如样本协方差矩阵的最大特征值, 
+\begin{align*}
+    \|\hSig\|=\sup_{\u \in \mS^{p-1}} \|\hSig \u\|_2=\sup_{\u \in \mS^{p-1}} \u \trans \hSig \u,
+\end{align*}
+这里的指标集为Euclidean球面$\mS^{p-1}$上的向量, 是一个无穷集合. 上述计算最大元素的方式就不能直接使用. 
+
+
+
+有限集的大小可以通过它的基数来度量, 对含有无限多元素的集合度量其``大小"则需要非常谨慎. 度量熵的概念为解决这个问题提供了一种方法, 这个概念可以追溯到Kolmogorov, Tikhomirov及其他俄罗斯学派成员的开创性工作. 尽管是以度量空间的包装和覆盖的形式在非随机的意义下被定义的, 度量熵对于理解随机过程的性质是非常重要的. 这里简单起见我们主要关注单位球面的``大小".
+
+\subsection{$\epsilon-$nets}
+
+\begin{defin}[$\epsilon-$net] 考虑一个度量空间$(X,d)$, $\forall \epsilon>0$, $X$的一个子集$X_\epsilon$称为$X$的$\epsilon-$net,
+    \begin{align*}
+        \forall x \in X, \exists y \in X_{\epsilon}, \mbox{使得}~d(x,y)\leq \epsilon.
+    \end{align*}
+    $X_\epsilon$的最小基数$N(X,\epsilon)$称为$X$的覆盖数(covering number)   
+\end{defin}
+
+$\epsilon-$net相当于在无穷个元素的集合中选取有限个点来代表所有元素, 例如
+\begin{itemize}
+    \item 对于$[0,1]$区间, 选取欧式距离$d(x,y)=|x-y|$, 则$N\left([0,1],1/n\right)\leq n$;
+    \item 对于单位正方形$[0,1]^2$, 选取欧式距离$d(\x,\y)=\|\x-\y\|_2$, 则$N\left([0,1],\sqrt{2}/n\right)\leq n^2$;
+\end{itemize}
+
+\begin{lem}[单位球面的覆盖数]
+   对于$p$维欧式空间的单位球面$\mS^{p-1}$, 考虑欧式距离下的$\epsilon-$net, 我们有
+   \begin{align*}
+    N(\mS^{p-1},\epsilon) \leq \left(1+\frac{2}{\epsilon}\right)^p.
+   \end{align*} 
+\end{lem}
+
+利用单位球面的$\epsilon-$net, 我们可以通过有限个指标集上的度量来控制最大特征值
+\begin{prop} \label{net-prop}
+    对于对称矩阵$\A \in \mR^{p \times p}$, 记$\mS_\epsilon$为单位球面$\mS^{p-1}$的$\epsilon-$net, 其中$\epsilon \in [0,1/2)$, 则
+    \begin{align*}
+        \sup_{\x \in \mS_\epsilon} |\x \trans \A \x| \leq   \|\A\|=\sup_{\x \in \mS^{p-1}} |\x \trans \A \x| \leq (1-2\epsilon)^{-1}  \sup_{\x \in \mS_\epsilon} |\x \trans \A \x|
+    \end{align*}
+\end{prop}
+\begin{proof}
+    记矩阵$\A$绝对值最大的特征值对应特征向量为$\x \in \mS^{p-1}$, 即
+    \begin{align*}
+        \|\A\|=|\x \trans \A \x|.
+    \end{align*}
+由$\epsilon-$net的定义, $\exists y \in \mS_{\epsilon}$使得 $\|\x-\y\|_2\leq \epsilon$. 利用三角不等式
+\begin{align*}
+   \|A\|- \y \trans \A \y \leq |\x \trans \A \x-\y \trans \A \y|=&|\x \trans \A (\x-\y)+\y \trans \A (\x-\y)|\\
+    \leq \|\A \x\|_2 \|\x-\y\|_2+\|\A \y\|_2 \|\x-\y\|_2 \leq 2 \epsilon \|\A\|,
+\end{align*} 
+即
+\begin{align*}
+\|\A\|\leq (1-2\epsilon)^{-1} \y \trans \A \y \leq (1-2\epsilon)^{-1}  \sup_{\y \in \mS_\epsilon} |\y \trans \A \y|.
+\end{align*}
+\end{proof}
+\subsection{最大特征值的尾部概率}
+下面我们控制样本协方差矩阵和总体协方差矩阵的谱范数, 由Proposition \ref{net-prop},
+\begin{align*}
+    \|\hSig-\bSig\| \leq (1-2\epsilon)^{-1} \sup_{\x \in \mS_\epsilon} |\x \trans (\hSig-\bSig) \x|,
+\end{align*}
+而
+\begin{align*}
+    \x \trans (\hSig-\bSig) \x= \frac{1}{n}\sum_{i=1}^n \left[ \left(\x \trans (\X_i-\bmu)\right)^2-\E \left(\x \trans (\X_i-\bmu)\right)^2\right].
+\end{align*}
+为了控制上述独立和随机变量的尾部概率, 我们可以假定$\x \trans (\X_i-\bmu)$满足次Gaussian性质, 即向量型次Gaussian分布.
+\begin{defin}[向量次Gaussian分布]
+$\forall \x \in \mS^{p-1}$, 定义$\X \in \mR^{p-1}$满足
+    \begin{align*}
+        \E\left[e^{\lambda \x \trans (\X-\E \X)}\right] \leq e^{\frac{\lambda^{2}\sigma^2}{2}} \qquad \forall \lambda \in \mR,
+    \end{align*}
+称为参数为$\sigma^2$的向量次Gaussian分布.    
+\end{defin}
+假定$\X_1,\ldots,\X_n$满足参数为1的向量次Gaussian分布, 则
+\begin{align*}
+    \pr \left[ \left| \x \trans (\hSig-\bSig) \x\right| \geq t  \right] \leq 2 \exp\left( -\frac{nt^2}{8}\right), \quad \forall t \in(0,1),
+\end{align*}
+结合$\epsilon-$net的覆盖数, 可得
+\begin{align*}
+    \pr \left[ \|\hSig-\bSig\| \geq t   \right] \leq & \pr \left[ (1-2\epsilon)^{-1} \sup_{\x \in \mS_\epsilon} |\x \trans (\hSig-\bSig) \x| \geq t   \right]\\
+    =& \pr \left[\sup_{\x \in \mS_\epsilon} |\x \trans (\hSig-\bSig) \x| \geq (1-2\epsilon) t   \right]\\
+ \leq & \sum_{\x \in \mS_\epsilon} \pr \left[ \left| \x \trans (\hSig-\bSig) \x\right| \geq t  \right] \\
+ \leq & 2 \left(1+\frac{2}{\epsilon}\right)^p \exp\left( -\frac{n(1-2\epsilon)^2 t^2}{8}\right), \quad \forall t \in(0,1),
+\end{align*}
+从而
+\begin{align*}
+    \|\hSig-\bSig\|=O_p\left( \sqrt{\frac{p}{n}}  \right),~\|\hSig-\bSig\|_2 \leq \sqrt{p}  \|\hSig-\bSig\|=O_p\left( \frac{p}{\sqrt{n}} \right).
+\end{align*}
+\subsection{应用: PCA的相合性}
+在主成分分析(Principal Component Analysis, PCA)方法中, 通过样本协方差矩阵$\hSig$的特征向量来估计总体协方差矩阵$\bSig$的的特征向量. 由Davis–Kahan Theorem \citep{yu2015useful}, 真实的降维空间与估计出来的降维空间之间的夹角距离可以通过$\|\hSig-\bSig\|$来控制. 所以在一定条件下$p/n \to 0$, 可得到PCA方法的相合性. 
+
+对于其他涉及到样本协方差矩阵(或其逆矩阵)和样本均值的统计方法, 相合性分析可以通过谱范数或者欧式距离来实现, 即在$p=o(n)$或者$p=o(\sqrt{n})$的条件下具有相合性.
+
+\subsection{延伸: 随机矩阵与最大特征值}
+最大特征值的随机性质是数学、物理、统计、信号处理等多个领域关注的问题. 随机矩阵领域关于样本协方差矩阵最大特征值有很多更加精细的结果, 例如Tracy–Widom distribution, Bai-Yin law等. 特别的，对于最大特征值的期望, 统计物理中可以利用Replica Trick计算出更加精细的结果. 感兴趣读者可以参阅相关材料文献. 

@@ -1,0 +1,172 @@
+\section{均值和协方差矩阵的稀疏估计}
+考虑一个多元样本$\X_1,\cdots,\X_n \in \mR^p$, 本节主要关注高维情形下总体均值和总体协方差矩阵的相合估计
+\begin{align*}
+    \bmu\defby \E \left[ \X_1\right],~\bSig=\cov(\X_1)=\E(\X_1-\bmu)(\X_1-\bmu)\trans.
+\end{align*}
+基于样本，我们可以得到样本均值
+\begin{align*}
+  \bar{\X}=\frac{1}{n}\sum_{i=1}^n \X_i,
+\end{align*}
+和样本协方差矩阵
+\begin{align*}
+    \S_n=\frac{1}{n}\sum_{i=1}^n \left(\X_i-\bar{\X}\right)\left(\X_i-\bar{\X}\right)\trans.
+\end{align*}
+
+\subsection{$\ell_\infty-$norm下的相合估计}
+高维情形下, 尽管有维数带来的误差积累等问题, 在$\ell_\infty-$norm下样本均值和样本协方差矩阵是相合估计.
+\begin{prop}\label{max-norm}
+    对于独立同分布样本$\X_1,\cdots,\X_n \in \mR^p$, 假定每个分量是次Guassian随机变量
+    \begin{align*}
+        \E\left[e^{\lambda (X_{1j}-\mu_j)}\right] \leq e^{\frac{\lambda^{2} \sigma^2}{2}}, \qquad \forall \lambda \in \mR,~j=1,\cdots,p,
+    \end{align*}
+   则存在仅依赖于$\sigma^2$的常数$c_1,c_2$使得当$\log(p)=o(n)$时候
+   \begin{align*}
+        \pr\left(\|\bar{\X}-\bmu\|_\infty \leq  c_1 \sqrt{\frac{\log p}{n}} \right) \to 1,~\pr\left(\|\S_n-\bSig\|_\infty \leq  c_2 \sqrt{\frac{\log p}{n}} \right) \to 1.
+   \end{align*} 
+\end{prop}
+
+\subsection{稀疏均值估计}
+对于$\bmu$, 考虑稀疏估计
+\begin{align*}
+	\hat{\bmu}(\lambda)=\soft(\bar{\X},\lambda).
+\end{align*}
+
+
+\begin{prop}[严格稀疏均值估计]
+    假定总体向量$\bmu$是\blue{严格稀疏}的, 即
+    \begin{align*}
+        \|\bmu\|_0 =\sum_{j=1}^p I(\bmu_j \neq 0) \leq s,
+    \end{align*}	
+    则设置$\lambda=c_1 \sqrt{\frac{\log p}{n}}$可得
+    \begin{align*}
+        \Pr\left(\|\hat{\bmu}-\bmu\|_\infty\leq 2c_1\sqrt{\frac{\log p}{n}}\right) \to 1.
+    \end{align*}
+    以及
+    \begin{align*}
+        \Pr\left(\|\hat{\bmu}-\bmu\|_1 \leq 2c_1 s\sqrt{\frac{\log p}{n}}\right) \to 1,~\Pr\left(\|\hat{\bmu}-\bmu\|_2 \leq 2c_1\sqrt{\frac{s\log p}{n}}\right) \to 1.
+    \end{align*}
+    \end{prop}
+\begin{proof}
+在事件
+\begin{align*}
+	\|\bar{\X}-\bmu\|_\infty \leq  c_1 \sqrt{\frac{\log p}{n}}
+\end{align*}	
+成立时,
+\begin{align*}
+	\|\hat{\bmu}-\bmu\|_\infty \leq \|\bar{\X}-\bmu\|_\infty+\|\bar{\X}-\bmu\|_\infty \leq 2c_1 \sqrt{\frac{\log p}{n}}.
+\end{align*}
+注意到
+\begin{align*}
+	\mu_j=0 \Rightarrow |\bar{X}_j|\leq c_1 \sqrt{\frac{\log p}{n}} \Rightarrow \hat{\mu}_j=\soft\left(\bar{X}_j, c_1 \sqrt{\frac{\log p}{n}}\right)=0,
+\end{align*}
+因此
+\begin{align*}
+	\|\hat{\bmu}-\bmu\|_1=\sum_{j: \mu_j \neq 0} |\hat{\mu}_j-\mu_j|+\sum_{j: \mu_j = 0} |\hat{\mu}_j-\mu_j|=\sum_{j: \mu_j \neq 0} |\hat{\mu}_j-\mu_j| \leq s \|\hat{\bmu}-\bmu\|_\infty,
+\end{align*}
+以及
+\begin{align*}
+	\|\hat{\bmu}-\bmu\|^2_2 \leq \|\hat{\bmu}-\bmu\|_1 \|\hat{\bmu}-\bmu\|_\infty \leq s \|\hat{\bmu}-\bmu\|^2_\infty.
+\end{align*}
+\end{proof}
+
+
+\begin{prop}[渐近稀疏均值估计]
+	假定总体向量$\bmu$是\blue{渐近稀疏}的, 即存在$q \in [0,1)$
+	\begin{align*}
+		\|\bmu\|^q_q =\sum_{j=1}^p |\bmu_j|^q \leq s_q,
+	\end{align*}	
+	则设置$\lambda=2c_1\sqrt{\frac{\log p}{n}}$可得
+	\begin{align*}
+		\Pr\left(\|\hat{\bmu}-\bmu\|_\infty\leq 3c_1\sqrt{\frac{\log p}{n}}\right) \to 1.
+	\end{align*}
+	以及
+	\begin{align*}
+		\Pr\left(\|\hat{\bmu}-\bmu\|_1 \leq 3 c_1 s_q \left(\sqrt{\frac{\log p}{n}} \right)^{1-q} \right) \to 1,~\Pr\left(\|\hat{\bmu}-\bmu\|_2 \leq 3c_1 \sqrt{s_q} \left(\sqrt{\frac{\log p}{n}} \right)^{1-q/2}\right) \to 1.
+	\end{align*}
+	\end{prop}
+\begin{proof}
+	在事件
+	\begin{align*}
+		\|\bar{\X}-\bmu\|_\infty \leq  c_1 \sqrt{\frac{\log p}{n}}
+	\end{align*}	
+	发生的条件下, 
+	\begin{align*}
+		\|\hat{\bmu}-\bmu\|_\infty \leq \|\bar{\X}-\bmu\|_\infty+\|\bar{\X}-\bmu\|_\infty \leq 3 c_1 \sqrt{\frac{\log p}{n}},
+	\end{align*}
+以及
+\begin{align*}
+	|\mu_j|\leq c_1 \sqrt{\frac{\log p}{n}} \Rightarrow |\bar{X}_j| \leq 2 c_1 \sqrt{\frac{\log p}{n}} \Rightarrow \hat{\mu}_j=0.
+\end{align*}
+由此可得
+\begin{align*}
+	\|\hat{\bmu}-\bmu\|_1=&\sum_{j: |\mu_j|\leq c_1 \sqrt{\frac{\log p}{n}} } |\hat{\mu}_j-\mu_j|+\sum_{j: |\mu_j|>c_1 \sqrt{\frac{\log p}{n}} } |\hat{\mu}_j-\mu_j|\\
+\leq & \sum_{j: |\mu_j|\leq c_1 \sqrt{\frac{\log p}{n}} } |\mu_j|+\sum_{j: |\mu_j|>c_1 \sqrt{\frac{\log p}{n}} } 3 c_1 \sqrt{\frac{\log p}{n}}\\
+\leq & \sum_{j: |\mu_j|\leq c_1 \sqrt{\frac{\log p}{n}} } |\mu_j|^q \left(c_1 \sqrt{\frac{\log p}{n}} \right)^{1-q}+\sum_{j: |\mu_j|>c_1 \sqrt{\frac{\log p}{n}} } 3 |\mu_j|^q \left(c_1\sqrt{\frac{\log p}{n}} \right)^{1-q}\\
+\leq & 3c_1 s_q \left(\sqrt{\frac{\log p}{n}} \right)^{1-q}
+\end{align*}
+以及
+\begin{align*}
+	\|\hat{\bmu}-\bmu\|^2_2 \leq \|\hat{\bmu}-\bmu\|_1 \|\hat{\bmu}-\bmu\|_\infty \leq 3^2c^2_1 s_q \left(\sqrt{\frac{\log p}{n}} \right)^{2-q}. 
+\end{align*}
+\end{proof}
+
+\begin{remark}[capped-$\ell_1$ 稀疏]
+另外一种严格稀疏的弱化形式是Capped-$\ell_1$ sparsity\citep{zhang2012general}, 
+\begin{align*}
+	\sum_{j=1}^p \min\left(1,\frac{|\mu_j|}{c_1 \sqrt{\frac{\log p}{n}}}\right) \leq s,
+\end{align*}
+此时上述两项也是可以控制的
+\begin{align*}
+	\|\hat{\bmu}-\bmu\|_1\leq & \sum_{j: |\mu_j|\leq c_1 \sqrt{\frac{\log p}{n}} } |\mu_j|+\sum_{j: |\mu_j|>c_1 \sqrt{\frac{\log p}{n}} } 3 c_1 \sqrt{\frac{\log p}{n}}\\
+=&\sum_{j: |\mu_j|\leq c_1 \sqrt{\frac{\log p}{n}} } \min\left(1,\frac{|\mu_j|}{c_1 \sqrt{\frac{\log p}{n}}}\right)  c_1 \sqrt{\frac{\log p}{n}}+3 c_1 \sqrt{\frac{\log p}{n}} \sum_{j: |\mu_j|> c_1 \sqrt{\frac{\log p}{n}} } \min\left(1,\frac{|\mu_j|}{c_1 \sqrt{\frac{\log p}{n}}}\right)  \\
+\leq & 3c_1 s \sqrt{\frac{\log p}{n}},
+\end{align*}
+从而可以得到严格稀疏类似的结果.
+\end{remark}
+
+\subsection{稀疏协方差估计}
+对于总体协方差矩阵$\bSig$的稀疏估计, 可以对样本协方差矩阵$\S_n$进行截断, 即考虑估计
+\begin{align*}
+	\hSig(\lambda)=\soft(\S_n,\lambda).
+\end{align*}
+对于矩阵的每一行(或者每一列)进行类似于稀疏均值估计的理论分析, 可以得到
+\begin{align*}
+	\max_{j} \|\hSig_j-\bSig_j\|_\infty=\|\hSig-\bSig\|_\infty,~\max_{j} \|\hSig_j-\bSig_j\|_1=\|\hSig-\bSig\|_{L_1}, \max_{j} \|\hSig_j-\bSig_j\|_2
+\end{align*}
+的相关结果. 结合Gershgorin Circle Theorem, 可以得到谱范数的界. 综上，对于严格稀疏和渐近稀疏我们有下述结果.
+
+\begin{prop}[严格稀疏协方差估计]
+    假定总体协方差$\bSig$是\blue{严格稀疏}的, 即
+    \begin{align*}
+        \max_{i=1,\ldots,p} \sum_{j=1}^p I(\Sigma_{ij} \neq 0) \leq s,
+    \end{align*}	
+    则设置$\lambda=c_2 \sqrt{\frac{\log p}{n}}$可得
+    \begin{align*}
+        \Pr\left(\|\hSig-\bSig\|_\infty\leq 2c_2\sqrt{\frac{\log p}{n}}\right) \to 1.
+    \end{align*}
+    以及
+    \begin{align*}
+        \Pr\left(\|\hSig-\bSig\| \leq 2c_2 s\sqrt{\frac{\log p}{n}}\right) \to 1,~\Pr\left(\|\hSig-\bSig\|_2/p\leq 2c_1\sqrt{\frac{s\log p}{n}}\right) \to 1.
+    \end{align*}
+    \end{prop}
+
+
+
+\begin{prop}[渐近稀疏协方差估计]
+	假定总体协方差$\bSig$是\blue{渐近稀疏}的, 即存在$q \in [0,1)$
+	\begin{align*}
+		\max_{i=1,\ldots,p} \sum_{j=1}^p |\Sigma_{ij}|^q \leq s_q,
+	\end{align*}	
+	则设置$\lambda=2c_2\sqrt{\frac{\log p}{n}}$可得
+	\begin{align*}
+		\Pr\left(\|\hSig-\bSig\|_\infty\leq 3c_2\sqrt{\frac{\log p}{n}}\right) \to 1.
+	\end{align*}
+	以及
+	\begin{align*}
+		\Pr\left(\|\hSig-\bSig\| \leq 3 c_2 s_q \left(\sqrt{\frac{\log p}{n}} \right)^{1-q} \right) \to 1,~\Pr\left(\|\hSig-\bSig\|_2/p \leq 3 c_2 \sqrt{s_q} \left(\sqrt{\frac{\log p}{n}} \right)^{1-q/2}\right) \to 1.
+	\end{align*}
+	\end{prop}
+\subsection{相关文献}
+\cite{bickel2008covariance}最早考虑了对样本协方差矩阵进行截断来得到稀疏估计, 并且证明了所得估计在高维($\log(p)=o(n)$)情形下是谱范数相合的. 进一步的, \cite{rothman2009generalized}考虑了一般形式的截断, 包括了Hard-thresholding, soft-thresholding以及SCAD惩罚下的截断等等. \cite{cai2011adaptive}考虑了对每一行采用不同的截断参数从而提升估计的精度。
+
+统计方法角度, \cite{shao2011sparse}和\cite{li2015sparse}的两个工作把截断的稀疏均值估计和稀疏协方差矩阵估计代入了线性判别分析和二次型判别分析中, 从理论上分析了所得分类器可以达到Bayes错判率.

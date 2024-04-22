@@ -1,0 +1,103 @@
+\begin{thebibliography}{19}
+\providecommand{\natexlab}[1]{#1}
+\providecommand{\url}[1]{\texttt{#1}}
+\expandafter\ifx\csname urlstyle\endcsname\relax
+  \providecommand{\doi}[1]{doi: #1}\else
+  \providecommand{\doi}{doi: \begingroup \urlstyle{rm}\Url}\fi
+
+\bibitem[Bickel and Levina(2008)]{bickel2008covariance}
+P.~J. Bickel and E.~Levina.
+\newblock Covariance regularization by thresholding.
+\newblock \emph{Annals of Statistics}, 36\penalty0 (6):\penalty0 2577--2604, 2008.
+
+\bibitem[Cai and Liu(2011{\natexlab{a}})]{cai2011adaptive}
+T.~Cai and W.~Liu.
+\newblock Adaptive thresholding for sparse covariance matrix estimation.
+\newblock \emph{Journal of the American Statistical Association}, 106\penalty0 (494):\penalty0 672--684, 2011{\natexlab{a}}.
+
+\bibitem[Cai et~al.(2011)Cai, Liu, and Luo]{cai2011constrained}
+T.~Cai, W.~Liu, and X.~Luo.
+\newblock A constrained $\ell_1$ minimization approach to sparse precision matrix estimation.
+\newblock \emph{Journal of the American Statistical Association}, 106\penalty0 (494):\penalty0 594--607, 2011.
+
+\bibitem[Cai and Liu(2011{\natexlab{b}})]{cai2011direct}
+T.~T. Cai and W.~Liu.
+\newblock A direct estimation approach to sparse linear discriminant analysis.
+\newblock \emph{Journal of the American Statistical Association}, 106\penalty0 (496):\penalty0 1566--1577, 2011{\natexlab{b}}.
+
+\bibitem[Candes and Tao(2007)]{candes2007dantzig}
+E.~Candes and T.~Tao.
+\newblock The dantzig selector: Statistical estimation when p is much larger than n.
+\newblock \emph{Annals of Statistics}, 35\penalty0 (1):\penalty0 2313--2351, 2007.
+
+\bibitem[Jiang et~al.(2018)Jiang, Wang, and Leng]{jiang2018direct}
+B.~Jiang, X.~Wang, and C.~Leng.
+\newblock A direct approach for sparse quadratic discriminant analysis.
+\newblock \emph{Journal of Machine Learning Research}, 19\penalty0 (31):\penalty0 1--37, 2018.
+
+\bibitem[Li and Shao(2015)]{li2015sparse}
+Q.~Li and J.~Shao.
+\newblock Sparse quadratic discriminant analysis for high dimensional data.
+\newblock \emph{Statistica Sinica}, pages 457--473, 2015.
+
+\bibitem[Liu and Luo(2015)]{liu2015fast}
+W.~Liu and X.~Luo.
+\newblock Fast and adaptive sparse precision matrix estimation in high dimensions.
+\newblock \emph{Journal of Multivariate Analysis}, 135:\penalty0 153--162, 2015.
+
+\bibitem[Mai et~al.(2012)Mai, Zou, and Yuan]{mai2012direct}
+Q.~Mai, H.~Zou, and M.~Yuan.
+\newblock A direct approach to sparse discriminant analysis in ultra-high dimensions.
+\newblock \emph{Biometrika}, 99\penalty0 (1):\penalty0 29--42, 2012.
+
+\bibitem[Rothman et~al.(2009)Rothman, Levina, and Zhu]{rothman2009generalized}
+A.~J. Rothman, E.~Levina, and J.~Zhu.
+\newblock Generalized thresholding of large covariance matrices.
+\newblock \emph{Journal of the American Statistical Association}, 104\penalty0 (485):\penalty0 177--186, 2009.
+
+\bibitem[Shao et~al.(2011)Shao, Wang, Deng, and Wang]{shao2011sparse}
+J.~Shao, Y.~Wang, X.~Deng, and S.~Wang.
+\newblock Sparse linear discriminant analysis by thresholding for high dimensional data.
+\newblock \emph{Annals of Statistics}, 39\penalty0 (2):\penalty0 1241--1265, 2011.
+
+\bibitem[Tibshirani(1996)]{tibshirani1996regression}
+R.~Tibshirani.
+\newblock Regression shrinkage and selection via the lasso.
+\newblock \emph{Journal of the Royal Statistical Society, Series B}, 58\penalty0 (1):\penalty0 267--288, 1996.
+
+\bibitem[Van De~Geer and B{\"u}hlmann(2009)]{van2009conditions}
+S.~A. Van De~Geer and P.~B{\"u}hlmann.
+\newblock On the conditions used to prove oracle results for the lasso.
+\newblock \emph{Electronic Journal of Statistics}, 3:\penalty0 1360--1392, 2009.
+
+\bibitem[Wainwright(2009)]{wainwright2009sharp}
+M.~J. Wainwright.
+\newblock Sharp thresholds for high-dimensional and noisy sparsity recovery using $\ell_1$ -constrained quadratic programming (lasso).
+\newblock \emph{IEEE Transactions on Information Theory}, 55\penalty0 (5):\penalty0 2183--2202, 2009.
+
+\bibitem[Yu et~al.(2015)Yu, Wang, and Samworth]{yu2015useful}
+Y.~Yu, T.~Wang, and R.~J. Samworth.
+\newblock A useful variant of the {D}avis--{K}ahan theorem for statisticians.
+\newblock \emph{Biometrika}, 102\penalty0 (2):\penalty0 315--323, 2015.
+
+\bibitem[Zhang and Zhang(2012)]{zhang2012general}
+C.-H. Zhang and T.~Zhang.
+\newblock A general theory of concave regularization for high-dimensional sparse estimation problems.
+\newblock \emph{Statistical Science}, 27\penalty0 (4):\penalty0 576--593, 2012.
+
+\bibitem[Zhao and Yu(2006)]{zhao2006model}
+P.~Zhao and B.~Yu.
+\newblock On model selection consistency of lasso.
+\newblock \emph{Journal of Machine Learning Research}, 7:\penalty0 2541--2563, 2006.
+
+\bibitem[Zhao et~al.(2014)Zhao, Cai, and Li]{zhao2014direct}
+S.~D. Zhao, T.~T. Cai, and H.~Li.
+\newblock Direct estimation of differential networks.
+\newblock \emph{Biometrika}, 101\penalty0 (2):\penalty0 253--268, 2014.
+
+\bibitem[Zou(2006)]{zou2006adaptive}
+H.~Zou.
+\newblock The adaptive lasso and its oracle properties.
+\newblock \emph{Journal of the American Statistical Association}, 101\penalty0 (476):\penalty0 1418--1429, 2006.
+
+\end{thebibliography}

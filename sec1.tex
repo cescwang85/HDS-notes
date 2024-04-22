@@ -1,0 +1,355 @@
+\section{预备知识}
+给定一组来自于某个参数分布族或者参数模型的样本$X_1,\ldots,X_n$, 经典数理统计研究的科学问题是如何基于样本构造出真实参数$\theta$的一个统计量估计$\hat{\theta}_n$.   
+\subsection{参数的相合估计}
+依据概率论中随机变量的收敛性, 我们可以定义参数估计的收敛性, 即\blue{相合估计}:
+\begin{itemize}
+	\item 依概率收敛(Convergence in probability):
+	\begin{align*}
+		\hat{\theta}_n \topr \theta \iff \forall \epsilon>0,~\pr(|\hat{\theta}_n-\theta|>\epsilon)\to 0.
+	\end{align*}
+	\item 几乎处处收敛(Almost sure convergence):
+	\begin{align*}
+		\hat{\theta}_n \toas \theta \iff & \forall \epsilon>0,~\pr(\limsup_{n \to \infty}\{|\hat{\theta}_n-\theta|>\epsilon\})=0,\\\iff & \forall \epsilon>0,~\pr\left(\bigcap\limits_{k=1}^\infty \bigcup\limits_{n=k}^\infty \{|\hat{\theta}_n-\theta|>\epsilon\}\right)=0.
+	\end{align*}
+	\item 完全收敛(Complete convergence):
+	\begin{align*}
+		\forall \epsilon>0,~\sum_{n=1}^\infty \pr(|\hat{\theta}_n-\theta|>\epsilon)<\infty.
+	\end{align*}
+\end{itemize}
+
+
+统计学中, 技术条件通常假设在随机变量的矩上，即我们可以考虑
+\begin{defin}[$r$阶矩相合]
+对于参数$\theta$的估计$\hat{\theta}_n$
+\begin{align*}	
+	\E|\hat{\theta}_n-\theta|^r \to 0.
+	\end{align*}
+\end{defin}
+尾部概率$\pr(|\hat{\theta}_n-\theta|>\epsilon)$和$r$阶矩$\E|\hat{\theta}_n-\theta|^r$之间可以通过Markov's inequality建立起联系。
+\begin{lem}[Markov's inequality]
+	对任意\blue{非负随机变量}$X$, $\forall x >0$,
+	\begin{align*}
+		\pr(X \geq x) \leq \frac{\E X}{x}.
+	\end{align*}
+\end{lem}
+
+\begin{remark}
+对于任意的单调增函数$\phi: \mR^{+} \to \mR^{+}$, 
+\begin{align*}
+	\pr(X \geq x) \leq \pr(\phi(X) \geq \phi(x)) \leq \frac{\E \phi(X)}{\phi(x)},
+\end{align*}
+即
+\begin{align*}
+	\pr(X \geq x) \leq \min_{\phi \uparrow} 	\frac{\E \phi(X)}{\phi(x)}.
+\end{align*}	
+特别的, 取$\phi(t)=I(t \geq x)$不等式可以取到等号.
+\end{remark}
+
+
+
+
+\subsection{大数定律(Law of large numbers, LLN)}
+	给定独立同分布(independent and identically distributed, i.i.d.)随机变量$X_1,\ldots,X_n$, 考虑样本均值
+\begin{align*}
+	\bar{X}_n=\frac{1}{n} \sum_{i=1}^n X_i.
+\end{align*}
+样本均值$\bar{X}_n$是总体均值$\mu \defby \E (X_1)$的\blue{相合估计}
+\begin{itemize}
+	\item 弱大数定律: $\bar{X}_n \topr \mu$,
+	\item 强大数定律: $\bar{X}_n \toas \mu$.
+\end{itemize}
+利用Markov's inequality可以得到(弱化)大数定律的证明.
+\begin{itemize}
+	\item (弱化的)弱大数定律的证明: 假定$\sigma^2  \defby \var(X_1)<\infty$, $\forall \epsilon>0$
+	\begin{align*}
+		\pr\left(|\bar{X}_n-\mu| \geq \epsilon \right)=\pr\left(|\bar{X}_n-\mu|^2 \geq \epsilon^2 \right)\leq \frac{\E |\bar{X}_n-\mu|^2}{\epsilon^2}=\frac{\sigma^2}{n \epsilon^2} \to 0.
+	\end{align*}
+	\item (弱化的)强大数定律的证明: 假定$a_4\defby \E(X_1-\mu)^4<\infty$, $\forall \epsilon>0$
+	\begin{align*}
+		\pr\left(|\bar{X}_n-\mu| \geq \epsilon \right) \leq \frac{\E |\bar{X}_n-\mu|^4}{\epsilon^4}=\frac{n^4 a_4+3n(n-1)\sigma^4}{n^4 \epsilon^4}=O(n^{-2}),
+	\end{align*}
+	由Borel–Cantelli lemma, $\bar{X}_n \toas \mu$. 
+\end{itemize}	
+\begin{ques}
+	如果$\E(X_1-\mu)^6<\infty$, 会如何？
+\end{ques}
+
+
+\subsection{样本均值}
+考虑一个多元正态分布的简单样本
+\begin{align*}
+	\X_1,\cdots, \X_n,~i.i.d.\sim N(\bmu, \bSig)
+\end{align*}	
+其中$\bmu \in \mR^p,~\bSig \in \mR^{p \times p} \succ 0$分别是总体均值和总体协方差矩阵.
+
+\begin{ques}
+	对于样本均值:
+	\begin{align*}
+		\bar{\X}=\frac{1}{n} \sum_{i=1}^n \X_i,
+	\end{align*}	
+	如何(定义)理解$\bar{\X}_n$是$\bmu$的\blue{相合估计}? 
+\end{ques}
+\bigskip
+
+基于一元参数的相合估计, 我们可以考察每个分量或者任意线性投影
+\begin{itemize}
+	\item 对于任意的分量$j \in \{1,\cdots,p\}$:  $\bar{\X}_j \topr \mu_j$.
+	\item 对于任意的单位向量$\u \in \mR^p$, 
+	\begin{align*}
+		\u \trans \bar{\X} \topr \u \trans \bmu.
+	\end{align*}
+\end{itemize}
+注意, 只要$\bSig$的特征值有界和$n \to \infty$, 这里的结果对任意维度$p$都是成立的.
+\bigskip
+
+
+考察每个分量或者投影都只是局部的方式, 从全局的角度我们可以考虑向量的度量.
+\begin{defin}[向量$\ell_q$ norm]
+给定一个向量$\x=(x_1,\ldots,x_p)\trans$, 定义向量的$\ell_q$-norm:
+\begin{align*}
+	\|\x\|_q=\left(\sum_{j=1}^p |x_j|^q  \right)^{1/q},~q\geq 1.
+\end{align*}	
+\end{defin}
+特别的
+\begin{itemize}
+	\item $\ell_1$-norm: $\|\x\|_1=\sum \limits_{j=1}^p |x_j|$;
+	\item $\ell_2$-norm (Frobenius norm): $\|\x\|_2=\sqrt{\sum \limits_{j=1}^p |x_j|^2}$;
+	\item $\ell_\infty$-norm: $\|\x\|_\infty=\max\limits_{j=1,\ldots,p} |x_j|$.
+\end{itemize}	
+关于$\ell_q$-norm相关的不等式包括Hölder's inequality和Minkowski's inequality.
+\bigskip
+
+对于多元正态分布的样本均值
+\begin{align*}
+	\bar{\X} \sim N(\bmu, \frac{1}{n}\bSig) \iff \sqrt{n} (\bar{\X}-\bmu)\sim N(\bf{0}, \bSig).
+\end{align*}	
+在$\bSig=\bI$的情形下, 	
+\begin{itemize}
+	\item  $\ell_1$-norm:
+	\begin{align*}
+		\E \|\bar{\X}-\bmu\|_1=\frac{1}{\sqrt{n}} \E \sum_{j=1}^p |Z_j|= \sqrt{\frac{2}{\pi}} \red{\frac{p}{\sqrt{n}}}.
+	\end{align*}
+	\item  $\ell_2$-norm:
+	\begin{align*}
+		\E \|\bar{\X}-\bmu\|_2=&\frac{1}{\sqrt{n}} \int_0^\infty \sqrt{x}  \frac{1}{2^{p/2} \Gamma(p/2)} x^{p/2-1}e^{-x/2}dx\\
+		=&\frac{\sqrt{2}}{\sqrt{n}} \frac{\Gamma(p/2+1/2)}{\Gamma(p/2)}=\sqrt{2} \red{\frac{\sqrt{p}(1+o(1))}{\sqrt{n}}}.
+	\end{align*}
+	\item 任意$\ell_q$-norm: 一般的$q>1$, 即使计算期望也很难得到具体结果, \red{猜测}
+	\begin{align*}
+		\E \|\bar{\X}-\bmu\|_q=O(1) \red{\frac{p^{1/q}}{\sqrt{n}}}.
+	\end{align*} 
+\end{itemize}
+
+下面考虑$q \to \infty$即最大值	
+\begin{align*}
+	\sqrt{n} \|\bar{\X}-\bmu\|_\infty\indist \max_{j=1,\ldots,p} |Z_j|,
+\end{align*}	
+其分布函数为
+\begin{align*}
+	\pr(\|\bar{\X}-\bmu\|_\infty \leq x)=\prod_{j=1}^p \pr(|Z_j|\leq \sqrt{n} x)=(\Phi(\sqrt{n} x)-\Phi(-\sqrt{n} x))^p, \forall x \geq 0.
+\end{align*}
+
+
+
+\begin{lem}[Mills ratio]
+	对于标准正态分布的分布函数$\Phi(x)$和密度函数$\phi(x)$, $\forall x >0$,
+	\begin{align*}
+		\frac{1}{x}-\frac{1}{x^3} \leq \frac{1-\Phi(x)}{\phi(x)} \leq \frac{1}{x}-\frac{1}{x^3}+\frac{3}{x^5}.
+	\end{align*}		
+\end{lem}
+由Mills ratio, 记
+\begin{align*}
+	1-\Phi(x)=\frac{c_x}{\sqrt{2\pi}} \frac{1}{x}\exp\{-\frac{x^2}{2}\},~c_x>0, c_x \to 1,
+	\end{align*}
+所以
+\begin{align*}
+	(\Phi(\sqrt{n} x)-\Phi(-\sqrt{n} x))^p=&\left(1-2(1-\Phi(\sqrt{n}x))   \right)^p\\
+	=&\exp\left\{p \log\left(1-2(1-\Phi(\sqrt{n}x))   \right) \right\}\\
+	\approx &\exp\left\{-p 2\left(1-\Phi(\sqrt{n}x)   \right) \right\}\\
+	=& \exp\left\{-\frac{2 c_{\sqrt{n}x}}{\sqrt{2\pi}} \frac{p}{\sqrt{n}x}\exp\{-\frac{nx^2}{2}\} \right\}.
+	\end{align*}	
+取
+\begin{align*}
+	x=\sqrt{\frac{2\log p}{n}},
+\end{align*}
+可得
+\begin{align*}
+	\pr\left(\|\bar{\X}-\bmu\|_\infty>\sqrt{\frac{2\log p}{n}}\right)=1-(\Phi(\sqrt{n} x)-\Phi(-\sqrt{n} x))^p \to 0.
+\end{align*}
+\begin{prop}
+对于$\X_1,\cdots, \X_n,~i.i.d.\sim N(\bmu, \bI)$的样本均值
+	\begin{align*}
+		\bar{\X}=\frac{1}{n} \sum_{i=1}^n \X_i,
+	\end{align*}	
+可得	
+\begin{align*}
+	\pr\left(\|\bar{\X}-\bmu\|_\infty>\sqrt{\frac{2\log p}{n}}\right) \to 0.
+\end{align*}
+\end{prop}
+
+进一步，我们考虑最大值的期望。
+\begin{align*}
+\E \left( \max_{j=1,\ldots,p} |Z_j| \right)=\int_0^\infty \left[ 1-(\Phi(x)-\Phi(-x))^p\right]dx.
+\end{align*}
+\begin{prop}
+	对于$Z_1,\cdots, Z_p,~i.i.d.\sim N(0,1)$,
+	\begin{align*}
+		\E \left( \max_{j=1,\ldots,p} |Z_j| \right)=\red{\sqrt{2 \log p}}+o(1).
+	\end{align*}
+	\end{prop}
+
+对于一般的$\ell_q$ norm, 	
+\begin{align*}
+	\E \|\bar{\X}-\bmu\|_q \leq p^{1/q}	\E \|\bar{\X}-\bmu\|_\infty \leq p^{1/q} \red{\sqrt{\frac{2 \log p}{n}}}+p^{1/q} \frac{o(1)}{\sqrt{n}}.
+\end{align*}
+和我们之前猜想的只相差了一个$\sqrt{2 \log p}$项.
+\subsection{应用: 高维稀疏均值估计}
+对样本$\X_1,\cdots, \X_n,~i.i.d.\sim N(\bmu, \bI)$, 考虑均值的\red{稀疏估计}
+\begin{align*}
+	\hat{\bmu}(\lambda)=&\argmin_{\x} \frac{1}{2n}\sum_{i=1}^n \|\X_i-\x\|_2^2+\lambda \|\x\|_1\\
+	=&\argmin_{\x} \frac{1}{2}\|\bar{\X}-\x\|_2^2+\lambda \|\x\|_1\\
+	=&\soft(\bar{\X},\lambda),
+\end{align*}
+其中$\soft$是soft-thresholding 函数, 
+\begin{align*}
+	\soft(x,\lambda)=\sign(x)\max(0,|x|-\lambda)=\sign(x)(|x|-\lambda)_{+}=\begin{cases}
+		x-\lambda, & x \geq \lambda\\
+		0,& |x|<\lambda\\
+		x+\lambda, & x\leq -\lambda.
+	\end{cases}
+\end{align*}
+
+设置$\lambda\geq \|\bar{\X}-\bmu\|_\infty$, 则
+\begin{align*}
+	\|\hat{\bmu}-\bmu\|_\infty \leq \|\hat{\bmu}-\bar{\X}\|_\infty  +\|\bar{\X}-\bmu\|_\infty\leq 2\lambda,
+\end{align*}
+且
+\begin{align*}
+	\red{\bmu_j=0 \Rightarrow \hat{\bmu}_j=0}.
+\end{align*}
+由此可得高维$(\log p =o(n))$情形下的相合估计. 
+\begin{prop}[严格稀疏]
+假定总体向量$\bmu$是\blue{严格稀疏}的, 即
+\begin{align*}
+	\|\bmu\|_0 =\sum_{j=1}^p I(\bmu_j \neq 0) \leq s,
+\end{align*}	
+则
+\begin{align*}
+	\pr\left(\|\hat{\bmu}-\bmu\|_\infty\leq 2\sqrt{\frac{2\log p}{n}}\right) \to 1.
+\end{align*}
+以及
+\begin{align*}
+	\red{\pr\left(\|\hat{\bmu}-\bmu\|_1 \leq 2s\sqrt{\frac{2\log p}{n}}\right) \to 1,~\pr\left(\|\hat{\bmu}-\bmu\|_2 \leq 2\sqrt{\frac{2s\log p}{n}}\right) \to 1}.
+\end{align*}
+\end{prop}
+\begin{ques}
+	尝试控制$\E \|\hat{\bmu}-\bmu\|_1$.
+\end{ques}
+
+	\begin{remark}[普适性(Universality)]上述结果依赖于标准正态分布，
+		\begin{itemize}
+			\item 上述结果可否推广到一般的协方差矩阵$\bSig$? 
+			\item 上述结果可否推广到更大的分布族?
+		\end{itemize}
+	\end{remark}
+
+
+
+
+\subsection{样本协方差矩阵}
+对于样本协方差矩阵(简单起见暂不考虑样本均值$\bar{\X}$)
+\begin{align*}
+	\hSig=\frac{1}{n} \sum_{i=1}^n (\X_i-\bmu)(\X_i-\bmu)\trans,
+\end{align*}
+如何(定义)理解$\hSig_n$是$\bSig$的\blue{相合估计}?从分量或者二次型角度,
+\begin{itemize}
+	\item 对于任意的分量$j \in \{1,\cdots,p\}$:  $\hSig_{i,j} \topr \bSig_{i,j}$.
+	\item 对于任意的单位向量$\u,\v \in \mR^p$, 
+	\begin{align*}
+		\u \trans \hSig \v \topr \u \trans \bSig \v.
+	\end{align*}
+\end{itemize}
+
+\begin{defin}[矩阵norm]
+	对于一个矩阵 $\A=(a_{ij})\in \mR^{p\times q}$, 常用的矩阵度量(matrix norm)
+	\begin{itemize}
+		\item the element-wise $l_{\infty}$ norm $\|\A\|_{\infty}=\max_{1\leq i \leq p, 1 \leq j \leq q} |a_{ij}|$;
+		\item the spectral norm $\|\A\|=\sup_{|\mathbf{x}|_2\leq 1}|\A \mathbf{x}|_2$;
+		\item the matrix $\ell_1$ norm $\|\A\|_{L}=\max\limits_{1\leq j\leq q}\sum\limits_{i=1}^{p}|a_{ij}|$;
+		\item the Frobenius norm $\|\A\|_2=\sqrt{\sum\limits_{i=1}^p\sum \limits_{j=1}^{q}a_{ij}^2}$;
+		\item the element-wise $\ell_1$ norm $\|\A\|_1=\sum\limits_{i=1}^p\sum\limits_{j=1}^{q}|a_{ij}|$.
+	\end{itemize}
+\end{defin}
+
+\begin{remark}[$\ell_1$ norm]
+	在高维统计中，矩阵$\ell_1$ norm $\|\A\|_{L}$是一个常用到的度量，例如对于对称的$\A$
+	\begin{align*}
+		\|\A \x\|_\infty \leq \|\A\|_{L} \|\x\|_{\infty},
+	\end{align*}
+	以及Gershgorin Circle Theorem
+	\begin{align*}
+		\|\A\|\leq \|\A\|_{L}.
+	\end{align*}
+\end{remark}
+基于矩阵度量，可以研究样本协方差矩阵$\hSig$
+\begin{align*}
+	\E \|\hSig-\bSig\|_2^2=\frac{(\tr \bSig)^2+\tr(\bSig^2)}{n}.
+\end{align*}
+对于其他矩阵度量计算具体结果都是非常困难的.
+
+\begin{remark}[普适性(Universality)]
+	样本协方差矩阵的分布更加复杂, 涉及到矩阵度量	
+	\begin{itemize}
+		\item 一般条件下, 不同的矩阵度量下什么时候样本协方差矩阵是总体协方差矩阵的相合估计?
+		\item 从向量的$\ell_\infty$结果可否推导得到$\|\hSig-\bSig\|_\infty$?
+		\item 如何得到$\bSig$的稀疏估计?
+		\item 如何得到精度矩阵$\bSig^{-1}$的稀疏估计?
+		\item 一般统计方法如最小二乘、线性判别分析、二次型判别分析中，如何得到稀疏的相合估计?
+	\end{itemize}
+\end{remark}
+
+
+\subsection{附录: 正态分布最大值的期望}
+对于$Z_1,\ldots,Z_p,i.i.d \sim N(0,1)$,
+\begin{align*}
+	&\E \left( \max_{j=1,\ldots,p} |Z_j| \right)=\int_0^\infty \left[ 1-(\Phi(x)-\Phi(-x))^p\right]dx\\
+	=&y-\int_0^y(\Phi(x)-\Phi(-x))^p dx +\int_y^\infty \left[ 1-(\Phi(x)-\Phi(-x))^p\right]dx
+\end{align*}
+\begin{itemize}
+	\item $x\geq y$的时候,
+\begin{align*}
+	\int_y^\infty \left[ 1-(\Phi(x)-\Phi(-x))^p\right]dx =& \int_y^\infty \left[ 1-\left(1-2(1-\Phi(x))   \right)^p \right]dx  \\
+	\leq & \int_y^\infty 2p(1-\Phi(x))  dx  \\
+	\leq & 2p \int_y^\infty \phi(x)\frac{c_x}{x} dx \leq 2p \int_y^\infty \phi(x)\frac{2}{y} dx \\
+=& \frac{4p}{y} (1-\Phi(y))\leq \frac{4p}{y} \frac{2}{y} \frac{1}{\sqrt{2\pi}} \exp\{-\frac{y^2}{2}\}, 
+\end{align*}
+所以取
+\begin{align*}
+	y \to \infty  , \frac{p}{y^2}\exp\{-\frac{y^2}{2}\} \to 0.
+\end{align*}
+\item $x \in (0,y)$ 的时候,
+\begin{align*}
+	(\Phi(x)-\Phi(-x))^p=&\left(1-2(1-\Phi(x))   \right)^p\\
+	=&\exp\left\{p \log\left(1-2(1-\Phi(x))   \right) \right\}\\
+	\approx &\exp\left\{-p 2\left(1-\Phi(x)   \right) \right\}\\
+	=& \exp\left\{-\frac{2 c_{x}}{\sqrt{2\pi}} \frac{p}{x}\exp\{-\frac{x^2}{2}\} \right\},
+	\end{align*}	
+ 所以 $\forall \epsilon>0$ 
+ \begin{align*}
+	\int_0^y(\Phi(x)-\Phi(-x))^p dx=&\int_0^{y-\epsilon} (\Phi(x)-\Phi(-x))^p dx+ \int_{y-\epsilon}^y (\Phi(x)-\Phi(-x))^p dx\\
+	\leq & (y-\epsilon) (\Phi(y-\epsilon)-\Phi(-y+\epsilon))^p +\epsilon\\
+	\leq & y \exp\left\{-c \frac{p}{y-\epsilon}\exp\{-\frac{(y-\epsilon)^2}{2}\} \right\} +\epsilon
+ \end{align*}	
+ 由此可以取
+ \begin{align*}
+	\frac{p}{y \log y} \exp\{-\frac{(y-\epsilon)^2}{2}\} \to \infty,
+ \end{align*}
+ 即
+ \begin{align*}
+	\frac{p}{y \log y} \exp\{-\frac{y^2}{2}\} \exp\{\epsilon y\}  \to \infty,
+ \end{align*}
+\end{itemize}
+由此, 设置$y=\sqrt{2 \log p},~\epsilon=1/\log(y)$, 可得
+\begin{align*}
+	\E \left( \max_{j=1,\ldots,p} |Z_j| \right)=\sqrt{2 \log p}+o(1).
+\end{align*}	
