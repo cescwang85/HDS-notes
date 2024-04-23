@@ -1,6 +1,62 @@
 \documentclass[11pt]{article}
 \usepackage{authblk}
-\input{~/Dropbox/1On/latex/head.tex}
+%%%%%%%%Cheng's Definition%%%%%%%%
+\usepackage{amsmath,amsfonts,amssymb,amsthm,CJKutf8,color,epsfig,url}
+\newcommand\red{\textcolor{red}}
+\newcommand\blue{\textcolor{blue}}
+\usepackage[authoryear,round]{natbib} 
+
+\newtheorem{cor}{Corollary}[section]
+\newtheorem{defin}{Definition}[section]
+\newtheorem{thm}{Theorem}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{remark}{{Remark}}[section]
+\newtheorem{lem}{Lemma}[section]
+\newtheorem{exm}{Example}[section]
+%%\def\E{\mathbb{E}}
+\def\mR{\mathbb{R}}
+\def\bias{\mbox{bias}}
+\def\pr{\mbox{pr}}
+\def\tr{\mbox{tr}}
+\def\var{\mbox{var}}
+\def\wvec{\mbox{vec}}
+\def\cov{\mbox{cov}}
+\def\rank{\mbox{rank}}
+\def\sign{\mbox{sign}}
+\def\corr{\mbox{corr}}
+\def\diag{\mbox{diag}}
+\def\MSE{\mbox{MSE}}
+\def\pr{\textsf{P}} % the symbol P for probability used the sans serif letter
+\def\ep{\textsf{E}} % the symbol E for expectation used the sans serif letter
+\def\Cov{\textsf{Cov}} % the symbol Cov for covariance used the sans serif letter
+\def\Var{\textsf{Var}} % the symbol Var for covariance used the sans serif letter
+
+\newcommand{\bSig}{\mbox{\boldmath $\Sigma$}}
+\newcommand{\bmu}{\mbox{\boldmath $\mu$}}
+\newcommand{\hSig}{\mbox{$\widehat{\bSig}$}}
+
+\def\X{{\bf X}}
+\def\x{{\bf x}}
+\def\Y{{\bf Y}}
+\def\y{{\bf y}}
+\def\Z{{\bf Z}}
+\def\z{{\bf z}}
+\def\A{{\bf A}}
+\def\a{{\bf a}}
+\def\B{{\bf B}}
+\def\b{{\bf b}}
+\def\e{{\bf e}}
+\def\bI{{\bf I}}
+
+\newcommand{\trans}{^\top}
+\def\defby{\stackrel{\mbox{\textrm{\tiny def}}}{=}}
+\DeclareMathOperator*{\argmin}{arg\,min} % Jan Hlavacek
+\DeclareMathOperator*{\argmax}{arg\,max} 
+\def\toas{\,{\buildrel a.s. \over \longrightarrow}\,}
+\def\topr{\,{\buildrel p \over \longrightarrow}\,}
+\def\tod{\,{\buildrel d \over \longrightarrow}\,}
+\def\indist{\,{\buildrel d \over =}\,}
+%%%%%%%%%%%%%End of Cheng's Definition%%%%%%%%%%%%%%%%%%%%%
 \newtheorem{ques}{Question}[section]
 \def\mS{\mathcal{S}}
 
