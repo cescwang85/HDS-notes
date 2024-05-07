@@ -90,12 +90,13 @@
    这里可以利用更加高级的Chernoff界的技巧, 由$Jessen$不等式
    \begin{align*}
       \exp\left( t \E \left[ \|\bar{\X}-\bmu\|_\infty \right]  \right)\leq & \E \exp \left[ t \|\bar{\X}-\bmu\|_\infty   \right]=\E  \max_{j} \exp \left[ t |\bar{X}_j-\mu_j|  \right]\\
-      \leq & \sum_{j=1}^p \E \exp \left[ t |\bar{X}_j-\mu_j|   \right]\leq p \exp\left(\frac{t^2}{2n} \right), \forall t>0,
+      \leq & \sum_{j=1}^p \E \exp \left[ t |\bar{X}_j-\mu_j|   \right]\leq 2 p \exp\left(\frac{t^2}{2n} \right), \forall t>0,
    \end{align*}
-   由此
+ 注意这里要控制的是一个sub-Gaussian随机变量的绝对值,所以多了一个常数项2. 由此
    \begin{align*}
-      \E \left[ \|\bar{\X}-\bmu\|_\infty \right] \leq \min_{t>0} \frac{\log(p)+\frac{t^2}{2n}}{t}=\sqrt{\frac{2\log p}{n}}.
+      \E \left[ \|\bar{\X}-\bmu\|_\infty \right] \leq \min_{t>0} \frac{\log(2 p)+\frac{t^2}{2n}}{t}=\sqrt{\frac{2\log p+2 \log 2}{n}}.
    \end{align*}
+特别的, 对于正态分布，这里的结果之前的也是吻合的.   
   \end{exm}
 
 \subsection{最大特征值表示}
